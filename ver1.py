@@ -1,23 +1,146 @@
-from tkinter import Tk, StringVar, Text, Pack, ttk, Frame, Entry, Label, Button, END, IntVar, Grid, Radiobutton
+from tkinter import Tk, StringVar, Text, Pack, ttk, Frame, Entry, Label, Button, END, IntVar, Grid, Radiobutton, OptionMenu
 
 calcWindow = Tk()
 calcWindow.title("Calc")
-calcWindow.geometry("500x500")
+calcWindow.geometry("450x700")
 
 calcWork = ttk.Notebook(calcWindow)
 calcWork.pack()
 
-poster = Frame(calcWork, width = 500, height = 400)
-banner = Frame(calcWork, width = 500, height = 400)
-foil = Frame(calcWork, width = 500, height = 400)
-rollUp = Frame(calcWork, width = 500, height = 400)
-ulotki = Frame(calcWork, width = 500, height = 400)
+poster = Frame(calcWork)
+banner = Frame(calcWork)
+foil = Frame(calcWork)
+rollUp = Frame(calcWork)
+ulotki = Frame(calcWork)
+businessCard = Frame(calcWork)
 
+calcWork.add(businessCard, text = "Wizytówki")
 calcWork.add(poster, text = "Plakaty")
 calcWork.add(banner, text = "Banery")
 calcWork.add(foil, text = "Folie")
 calcWork.add(rollUp, text = "Roll-upy")
 calcWork.add(ulotki, text = "Ulotki")
+
+#podstawowe stałe
+sra3Ryza130g = 48.47
+sra3Ryza150g = 55.81
+sra3Ryza170g = 63.12
+sra3Ryza200g = 37.48
+sra3Ryza250g = 47.87
+sra3Ryza300g = 57.58
+sra3Ryza350g = 34.5
+sra3RyzaOzdobny = 185.0
+iloscRyza125 = 125.0
+iloscRyza250 = 250.0
+iloscRyza500 = 500.0
+iloscRyzaOzdobny = 100
+cenaPapieruSra3 = sra3Ryza350g / iloscRyza500
+przelotSerwisowy = 0.1
+leasingMaszyny = 985.0
+kosztWliczonyDoPrzelotu = leasingMaszyny / 10000.0
+drukKosztPracownika1MinutaLokalZa1Pracownika = 0.5 + 0.5
+drukKosztPracownikaLokal36Sra3NaMin = drukKosztPracownika1MinutaLokalZa1Pracownika / 36.0
+przygotowanieDoDrukuRozgrzanieMaszyny10Min = 30.0 / 60.0 * 10.0
+cenaFoliiZaPrzelotSra310 = 390.0 / 3000.0 / 2.0
+ryczaltZakkupFoliarkiDoliczonydoPrzelotu10Sra3 = 0.2
+foliaKosztPracownikaLokal = 0.5 + 0.5
+foliaKosztPracownikaLokal2PrzelotyNaMin = foliaKosztPracownikaLokal / 2.0
+ciecieKosztPracownika8MinutLokal = 8.0 * (0.5 + 0.5)
+ryczaltZaGilotyneNozMin = 5.0
+stalyProcent = 7.0 / 100.0
+pakowanie = 5.0
+iloscNaArkuszu = 20.0
+
+#businessCard
+def businessCardCost():
+    ciecieWizytowek = float((ciecieKosztPracownika8MinutLokal + ryczaltZaGilotyneNozMin) * float(entryCardsQuantityPatternsValue.get()))
+    cost1 = float(entryCardsQuantityPatternsValue.get()) * float(entryCardsQuantityValue.get()) / float(iloscNaArkuszu)
+    cenaPrzelotuPracownik = 0
+    if variableCardsOverprint.get() == "0":
+        cenaPrzelotuPracownik = float(2 * (przelotSerwisowy + kosztWliczonyDoPrzelotu + drukKosztPracownikaLokal36Sra3NaMin))
+    elif variableCardsOverprint.get() == "1":
+        cenaPrzelotuPracownik = float(4 * (przelotSerwisowy + kosztWliczonyDoPrzelotu + drukKosztPracownikaLokal36Sra3NaMin))
+    else:
+        pass
+    foliowanie = float(cenaFoliiZaPrzelotSra310) + float(ryczaltZakkupFoliarkiDoliczonydoPrzelotu10Sra3) + float(foliaKosztPracownikaLokal2PrzelotyNaMin)
+    if variableCardsOverprint.get() == "0" and variableCardsFoil.get() == "0":
+        foliowanie = 0
+    elif variableCardsOverprint.get() == "0" and variableCardsFoil.get() == "1":
+        foliowanie = float(foliowanie)
+    elif variableCardsOverprint.get() == "0" and variableCardsFoil.get() == "2":
+        foliowanie = float(foliowanie * 2)
+    elif variableCardsOverprint.get() == "1" and variableCardsFoil.get() == "0":
+        foliowanie = 0
+    elif variableCardsOverprint.get() == "1" and variableCardsFoil.get() == "1":
+        foliowanie = float(foliowanie * 2)
+    elif variableCardsOverprint.get() == "1" and variableCardsFoil.get() == "2":
+        foliowanie = float(foliowanie * 4)
+    else:
+        pass
+    cost2 = float(cenaPapieruSra3) + float(cenaPrzelotuPracownik) + float(foliowanie)
+    finalCost = round(((cost1 * cost2) + ciecieWizytowek + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min), 2)
+    finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
+    textBusinessCardsCost.delete("1.0", END)
+    textBusinessCardsCost.insert(END, finalCost)
+    textBusinessCardsCostProfit.delete("1.0", END)
+    textBusinessCardsCostProfit.insert(END, finalCostProfit)
+
+
+labelNameCardsPatterns = Label(businessCard, text = "Ilość wzorców:")
+labelNameCardsPatterns.pack()
+
+entryCardsQuantityPatternsValue = StringVar()
+entryCardsQuantityPatternsValue = Entry(businessCard, textvariable = entryCardsQuantityPatternsValue)
+entryCardsQuantityPatternsValue.pack()
+
+labelNameCardsQuantity = Label(businessCard, text = "Ilość:")
+labelNameCardsQuantity.pack()
+
+entryCardsQuantityValue = StringVar()
+entryCardsQuantityValue = Entry(businessCard, textvariable = entryCardsQuantityValue)
+entryCardsQuantityValue.pack()
+
+labelNameCardsPaperWeight = Label(businessCard, text = "Gramatura:")
+labelNameCardsPaperWeight.pack()
+
+variableCardsPaperWeight = IntVar()
+
+valuesCardsPaperWeightSize = {"350":0, "Ozdobny":1}
+
+for (text, value) in valuesCardsPaperWeightSize.items():
+    Radiobutton(businessCard, text = text, variable = variableCardsPaperWeight, value = value).pack()
+
+labelNameCardsOverprint = Label(businessCard, text = "Zadruk:")
+labelNameCardsOverprint.pack()
+
+variableCardsOverprint = StringVar()
+
+valuesCardsOverprint = {"4+0":0, "4+4":1}
+
+for (text, value) in valuesCardsOverprint.items():
+    Radiobutton(businessCard, text = text, variable = variableCardsOverprint, value = value).pack()
+
+labelNameCardsFoil = Label(businessCard, text = "Foliowanie:")
+labelNameCardsFoil.pack()
+
+variableCardsFoil = StringVar()
+
+valuesCardsFoil = {"Brak":0, "1+0":1, "1+1":2}
+
+for (text, value) in valuesCardsFoil.items():
+    Radiobutton(businessCard, text = text, variable = variableCardsFoil, value = value).pack()
+
+buttonBusinessCardsCost = Button(businessCard, text = "Oblicz koszt", command = businessCardCost)
+buttonBusinessCardsCost.pack()
+
+textBusinessCardsCost = Text(businessCard, height = 1, width = 20)
+textBusinessCardsCost.pack()
+
+labelNameCardsProfit = Label(businessCard, text = "Stały koszt 7%:")
+labelNameCardsProfit.pack()
+
+textBusinessCardsCostProfit = Text(businessCard, height = 1, width = 20)
+textBusinessCardsCostProfit.pack()
 
 #posters
 def posterCost():
@@ -38,7 +161,7 @@ labelNamePosterSize.pack()
 
 variablePosterSize = IntVar()
 
-valuesPosterSize = {"A0":11, "A1":12, "A2":13}
+valuesPosterSize = {"A4":0, "A3":1}
 
 for (text, value) in valuesPosterSize.items():
     Radiobutton(poster, text = text, variable = variablePosterSize, value = value).pack()
@@ -48,10 +171,30 @@ labelNamePosterPaperWeight.pack()
 
 variablePosterPaperWeight = IntVar()
 
-valuesPosterPaperWeight = {"125":11, "150":12, "200":15}
+valuesPosterPaperWeight = {"130":0, "150":1, "170":2, "200":3, "250":4, "300":5, "350":6, "Ozdobny":7}
 
 for (text, value) in valuesPosterPaperWeight.items(): 
     Radiobutton(poster, text = text, variable = variablePosterPaperWeight, value = value).pack()
+
+labelNamePostersOverprint = Label(poster, text = "Zadruk:")
+labelNamePostersOverprint.pack()
+
+variablePostersOverprint = StringVar()
+
+valuesPostersOverprint = {"4+0":0, "4+4":1}
+
+for (text, value) in valuesPostersOverprint.items():
+    Radiobutton(poster, text = text, variable = variablePostersOverprint, value = value).pack()
+
+labelNamePostersFoil = Label(poster, text = "Foliowanie:")
+labelNamePostersFoil.pack()
+
+variablePostersFoil = StringVar()
+
+valuesPostersFoil = {"Brak":0, "1+0":1, "1+1":2}
+
+for (text, value) in valuesPostersFoil.items():
+    Radiobutton(poster, text = text, variable = valuesPostersFoil, value = value).pack()
 
 labelNamePosterProfit = Label(poster, text = "Marża:")
 labelNamePosterProfit.pack()
@@ -65,6 +208,12 @@ buttonPosterCost.pack()
 
 textPosterCost = Text(poster, height = 1, width = 20)
 textPosterCost.pack()
+
+labelNamePostersProfit = Label(poster, text = "Stały koszt 7%:")
+labelNamePostersProfit.pack()
+
+textBusinessPostersCostProfit = Text(poster, height = 1, width = 20)
+textBusinessPostersCostProfit.pack()
 
 #banners
 def bannerCost():
@@ -167,5 +316,8 @@ valuesRollUpSize = {"1":12, "2":13}
 
 for (text, value) in valuesRollUpSize.items():
     Radiobutton(rollUp, text = text, variable = variableRollUpSize, value = value).pack()
+
+#flyers
+
 
 calcWindow.mainloop()
