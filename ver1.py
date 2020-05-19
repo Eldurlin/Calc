@@ -2,24 +2,25 @@ from tkinter import Tk, StringVar, Text, Pack, ttk, Frame, Entry, Label, Button,
 
 calcWindow = Tk()
 calcWindow.title("Calc")
-calcWindow.geometry("450x700")
+calcWindow.geometry("450x500")
 
 calcWork = ttk.Notebook(calcWindow)
 calcWork.pack()
 
 poster = Frame(calcWork)
 banner = Frame(calcWork)
+flyer = Frame(calcWork)
 foil = Frame(calcWork)
 rollUp = Frame(calcWork)
-ulotki = Frame(calcWork)
 businessCard = Frame(calcWork)
 
 calcWork.add(businessCard, text = "Wizytówki")
 calcWork.add(poster, text = "Plakaty")
+calcWork.add(flyer, text = "Ulotki")
 calcWork.add(banner, text = "Banery")
 calcWork.add(foil, text = "Folie")
 calcWork.add(rollUp, text = "Roll-upy")
-calcWork.add(ulotki, text = "Ulotki")
+
 
 #podstawowe stałe
 sra3Ryza130g = 48.47
@@ -251,6 +252,127 @@ labelPostersProfit.pack()
 textPostersCostProfit = Text(poster, height = 1, width = 20)
 textPostersCostProfit.pack()
 
+
+#Flyers
+def flyerCost():
+    cost = 0
+    if varFlyerSize.get() == "A4":
+        cost = float(entryFlyerPatterns.get()) * float(entryFlyerQuantity.get()) / 2
+    elif varFlyerSize.get() == "A5" or varFlyerSize.get() == "14/14 14,5/14,5 15/15":
+        cost = float(entryFlyerPatterns.get()) * float(entryFlyerQuantity.get()) / 4
+    elif varFlyerSize.get() == "A6":
+        cost = float(entryFlyerPatterns.get()) * float(entryFlyerQuantity.get()) / 8
+    else:
+        cost = float(entryFlyerPatterns.get()) * float(entryFlyerQuantity.get()) / 6
+    cenaPrzelotuPracownik = 0
+    if varFlyerOverprint.get() == "4+0":
+        cenaPrzelotuPracownik = (2 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + drukKosztPracownikaLokal36Sra3NaMin
+    else:
+        cenaPrzelotuPracownik = (4 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + drukKosztPracownikaLokal36Sra3NaMin
+    foliowanie = float(cenaFoliiZaPrzelotSra310) + float(ryczaltZakupFoliarkiDoliczonydoPrzelotu10Sra3) + float(foliaKosztPracownikaLokal2PrzelotyNaMin)
+    if (varFlyerPaperWeight.get() == "200" or varFlyerPaperWeight.get() == "250" or varFlyerPaperWeight.get() == "300" or varFlyerPaperWeight.get() == "350") and varFlyerFoil.get() == "1+0" and varFlyerOverprint.get() == "4+0":
+        foliowanie = foliowanie
+    elif (varFlyerPaperWeight.get() == "200" or varFlyerPaperWeight.get() == "250" or varFlyerPaperWeight.get() == "300" or varFlyerPaperWeight.get() == "350") and varFlyerFoil.get() == "1+1" and varFlyerOverprint.get() == "4+4":
+        foliowanie = foliowanie * 2 + drukKosztPracownikaLokal36Sra3NaMin
+    elif varFlyerPaperWeight.get() == "Ozdobny" and varFlyerOverprint.get() == "4+4":
+        foliowanie = drukKosztPracownikaLokal36Sra3NaMin
+    else:
+        foliowanie = 0
+    ciecie = 0
+    if varFlyerSize.get() == "A4":
+        ciecie = (ciecieA4PracownikLokal + ryczaltZaGilotyneNozMin) * float(entryFlyerPatterns.get())
+    elif varFlyerSize.get() == "A5" or varFlyerSize.get() == "14/14 14,5/14,5 15/15":
+        ciecie = (ciecieA5PracownikLokal + ryczaltZaGilotyneNozMin) * float(entryFlyerPatterns.get())
+    elif varFlyerSize.get() == "A6":
+        ciecie = (ciecieA6PracownikLokal + ryczaltZaGilotyneNozMin) * float(entryFlyerPatterns.get())
+    else:
+        ciecie = (ciecieDlPracownikLokal + ryczaltZaGilotyneNozMin) * float(entryFlyerPatterns.get())
+    finalCost = 0
+    if varFlyerPaperWeight.get() == "130":
+        finalCost = (cost * (cenaPapieruSra3130g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+    elif varFlyerPaperWeight.get() == "150":
+        finalCost = (cost * (cenaPapieruSra3150g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+    elif varFlyerPaperWeight.get() == "170":
+        finalCost = (cost * (cenaPapieruSra3170g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+    elif varFlyerPaperWeight.get() == "200":
+        finalCost = (cost * (cenaPapieruSra3200g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+    elif varFlyerPaperWeight.get() == "250":
+        finalCost = (cost * (cenaPapieruSra3250g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+    elif varFlyerPaperWeight.get() == "300":
+        finalCost = (cost * (cenaPapieruSra3300g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+    elif varFlyerPaperWeight.get() == "350":
+        finalCost = (cost * (cenaPapieruSra3350g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+    else:
+        finalCost = (cost * (cenaPapieruSra3Ozdobny + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+    finalCost = round(finalCost, 2)
+    finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
+    textFlyerCost.delete("1.0", END)
+    textFlyerCost.insert(END, finalCost)
+    textFlyerCostProfit.delete("1.0", END)
+    textFlyerCostProfit.insert(END, finalCostProfit)
+
+labelFlyerPatterns = Label(flyer, text = "Ilość wzorów:")
+labelFlyerPatterns.pack()
+
+entryFlyerPatterns = StringVar()
+entryFlyerPatterns = Entry(flyer, textvariable = entryFlyerPatterns)
+entryFlyerPatterns.pack()
+
+labelFlyerQuantity = Label(flyer, text = "Ilość:")
+labelFlyerQuantity.pack()
+
+entryFlyerQuantity = StringVar()
+entryFlyerQuantity = Entry(flyer, textvariable = entryFlyerQuantity)
+entryFlyerQuantity.pack()
+
+labelFlyerSize = Label(flyer, text = "Wielkość:")
+labelFlyerSize.pack()
+
+optFlyerSize = ["A4", "A5", "A6", "DL", "14/14 14,5/14,5 15/15"]
+varFlyerSize = StringVar()
+varFlyerSize.set(optFlyerSize[0])
+optFlyerSize = OptionMenu(flyer, varFlyerSize, *optFlyerSize)
+optFlyerSize.pack()
+
+labelFlyerPaperWeight = Label(flyer, text = "Gramatura:")
+labelFlyerPaperWeight.pack()
+
+optFlyerPaperWeight = ["130", "150", "170", "200", "250", "300", "350", "Ozdobny"]
+varFlyerPaperWeight = StringVar()
+varFlyerPaperWeight.set(optFlyerPaperWeight[0])
+optFlyerPaperWeight = OptionMenu(flyer, varFlyerPaperWeight, *optFlyerPaperWeight)
+optFlyerPaperWeight.pack()
+
+labelFlyersOverprint = Label(flyer, text = "Zadruk:")
+labelFlyersOverprint.pack()
+
+optFlyerOverprint = ["4+0", "4+4"]
+varFlyerOverprint = StringVar()
+varFlyerOverprint.set(optFlyerOverprint[0])
+optFlyerOverprint = OptionMenu(flyer, varFlyerOverprint, *optFlyerOverprint)
+optFlyerOverprint.pack()
+
+labelFlyerFoil = Label(flyer, text = "Foliowanie:")
+labelFlyerFoil.pack()
+
+optFlyerFoil = ["Brak", "1+0", "1+1"]
+varFlyerFoil = StringVar()
+varFlyerFoil.set(optFlyerFoil[0])
+optFlyerFoil = OptionMenu(flyer, varFlyerFoil, *optFlyerFoil)
+optFlyerFoil.pack()
+
+buttonFlyerCost = Button(flyer, text = "Oblicz koszt", command = flyerCost)
+buttonFlyerCost.pack()
+
+textFlyerCost = Text(flyer, height = 1, width = 20)
+textFlyerCost.pack()
+
+labelFlyersProfit = Label(flyer, text = "Stały koszt 7%")
+labelFlyersProfit.pack()
+
+textFlyerCostProfit = Text(flyer, height = 1, width = 20)
+textFlyerCostProfit.pack()
+
 #banners
 def bannerCost():
     cost = float(entryBannerQuantityValue.get()) * (float(variableBannerSize.get()) / 10)
@@ -352,8 +474,5 @@ valuesRollUpSize = {"1":12, "2":13}
 
 for (text, value) in valuesRollUpSize.items():
     Radiobutton(rollUp, text = text, variable = variableRollUpSize, value = value).pack()
-
-#flyers
-
 
 calcWindow.mainloop()
