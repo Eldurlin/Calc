@@ -41,6 +41,7 @@ cenaPapieruSra3200g = sra3Ryza200g / iloscRyza250
 cenaPapieruSra3250g = sra3Ryza250g / iloscRyza250
 cenaPapieruSra3300g = sra3Ryza300g / iloscRyza250
 cenaPapieruSra3350g = sra3Ryza350g / iloscRyza125
+cenaPapieruSra3Ozdobny = sra3RyzaOzdobny / iloscRyzaOzdobny
 ciecieA3PracownikLokal = 4 * (0.5 + 0.5)
 ciecieA4PracownikLokal = 5 * (0.5 + 0.5)
 ciecieA5PracownikLokal = 6 * (0.5 + 0.5)
@@ -50,10 +51,10 @@ przelotSerwisowy = 0.1
 leasingMaszyny = 985.0
 kosztWliczonyDoPrzelotu = leasingMaszyny / 10000.0
 drukKosztPracownika1MinutaLokalZa1Pracownika = 0.5 + 0.5
-drukKosztPracownikaLokal36Sra3NaMin = drukKosztPracownika1MinutaLokalZa1Pracownika / 36.0
+drukKosztPracownikaLokal36Sra3NaMin = drukKosztPracownika1MinutaLokalZa1Pracownika / 30.0
 przygotowanieDoDrukuRozgrzanieMaszyny10Min = 30.0 / 60.0 * 10.0
 cenaFoliiZaPrzelotSra310 = 390.0 / 3000.0 / 2.0
-ryczaltZakkupFoliarkiDoliczonydoPrzelotu10Sra3 = 0.2
+ryczaltZakupFoliarkiDoliczonydoPrzelotu10Sra3 = 0.2
 foliaKosztPracownikaLokal = 0.5 + 0.5
 foliaKosztPracownikaLokal2PrzelotyNaMin = foliaKosztPracownikaLokal / 2.0
 ciecieKosztPracownika8MinutLokal = 8.0 * (0.5 + 0.5)
@@ -63,178 +64,180 @@ pakowanie = 5.0
 iloscNaArkuszu = 20.0
 
 #businessCard
-def businessCardCost():
-    ciecieWizytowek = float((ciecieKosztPracownika8MinutLokal + ryczaltZaGilotyneNozMin) * float(entryCardsQuantityPatternsValue.get()))
-    cost1 = float(entryCardsQuantityPatternsValue.get()) * float(entryCardsQuantityValue.get()) / float(iloscNaArkuszu)
+def cardsCost():
+    ciecieWizytowek = float((ciecieKosztPracownika8MinutLokal + ryczaltZaGilotyneNozMin) * float(entryCardsPatterns.get()))
+    cost1 = float(entryCardsPatterns.get()) * float(entryCardsQuantity.get()) / float(iloscNaArkuszu)
     cenaPrzelotuPracownik = 0
-    if variableCardsOverprint.get() == "0":
+    if varCardsOverprint.get() == "4+0":
         cenaPrzelotuPracownik = float(2 * (przelotSerwisowy + kosztWliczonyDoPrzelotu + drukKosztPracownikaLokal36Sra3NaMin))
     else:
         cenaPrzelotuPracownik = float(4 * (przelotSerwisowy + kosztWliczonyDoPrzelotu + drukKosztPracownikaLokal36Sra3NaMin))
-    foliowanie = float(cenaFoliiZaPrzelotSra310) + float(ryczaltZakkupFoliarkiDoliczonydoPrzelotu10Sra3) + float(foliaKosztPracownikaLokal2PrzelotyNaMin)
-    if (variableCardsOverprint.get() == "0" or variableCardsOverprint.get() == "1") and variableCardsFoil.get() == "0":
+    foliowanie = float(cenaFoliiZaPrzelotSra310) + float(ryczaltZakupFoliarkiDoliczonydoPrzelotu10Sra3) + float(foliaKosztPracownikaLokal2PrzelotyNaMin)
+    if (varCardsOverprint.get() == "4+0" or varCardsOverprint.get() == "4+4") and varCardsFoil.get() == "Brak":
         foliowanie = 0
-    elif variableCardsOverprint.get() == "0" and variableCardsFoil.get() == "1":
+    elif varCardsOverprint.get() == "4+0" and varCardsFoil.get() == "1+0":
         foliowanie = float(foliowanie)
-    elif (variableCardsOverprint.get() == "0" and variableCardsFoil.get() == "2") or (variableCardsOverprint.get() == "1" and variableCardsFoil.get() == "1"):
+    elif (varCardsOverprint.get() == "4+0" and varCardsFoil.get() == "1+1") or (varCardsOverprint.get() == "4+4" and varCardsFoil.get() == "1+0"):
         foliowanie = float(foliowanie * 2)
     else:
         foliowanie = float(foliowanie * 4)
     cost2 = float(cenaPapieruSra3350g) + float(cenaPrzelotuPracownik) + float(foliowanie)
     finalCost = round(((cost1 * cost2) + ciecieWizytowek + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min), 2)
     finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
-    textBusinessCardsCost.delete("1.0", END)
-    textBusinessCardsCost.insert(END, finalCost)
-    textBusinessCardsCostProfit.delete("1.0", END)
-    textBusinessCardsCostProfit.insert(END, finalCostProfit)
+    textCardsCost.delete("1.0", END)
+    textCardsCost.insert(END, finalCost)
+    textCardsCostProfit.delete("1.0", END)
+    textCardsCostProfit.insert(END, finalCostProfit)
 
-labelNameCardsPatterns = Label(businessCard, text = "Ilość wzorców:")
-labelNameCardsPatterns.pack()
+labelCardsPatterns = Label(businessCard, text = "Ilość wzorów:")
+labelCardsPatterns.pack()
 
-entryCardsQuantityPatternsValue = StringVar()
-entryCardsQuantityPatternsValue = Entry(businessCard, textvariable = entryCardsQuantityPatternsValue)
-entryCardsQuantityPatternsValue.pack()
+entryCardsPatterns = StringVar()
+entryCardsPatterns = Entry(businessCard, textvariable = entryCardsPatterns)
+entryCardsPatterns.pack()
 
-labelNameCardsQuantity = Label(businessCard, text = "Ilość:")
-labelNameCardsQuantity.pack()
+labelCardsQuantity = Label(businessCard, text = "Ilość:")
+labelCardsQuantity.pack()
 
-entryCardsQuantityValue = StringVar()
-entryCardsQuantityValue = Entry(businessCard, textvariable = entryCardsQuantityValue)
-entryCardsQuantityValue.pack()
+entryCardsQuantity = StringVar()
+entryCardsQuantity = Entry(businessCard, textvariable = entryCardsQuantity)
+entryCardsQuantity.pack()
 
-labelNameCardsPaperWeight = Label(businessCard, text = "Gramatura:")
-labelNameCardsPaperWeight.pack()
+labelCardsPaperWeight = Label(businessCard, text = "Gramatura:")
+labelCardsPaperWeight.pack()
 
-variableCardsPaperWeight = IntVar()
+optionsCardsPaperWeight = ["350", "Ozdobny"]
+varCardsPaperWeight = StringVar()
+varCardsPaperWeight.set(optionsCardsPaperWeight[0])
+optCardsPaperWeightMenu = OptionMenu(businessCard, varCardsPaperWeight, *optionsCardsPaperWeight)
+optCardsPaperWeightMenu.pack()
 
-valuesCardsPaperWeightSize = {"350":0, "Ozdobny":1}
+labelCardsOverprint = Label(businessCard, text = "Zadruk:")
+labelCardsOverprint.pack()
 
-for (text, value) in valuesCardsPaperWeightSize.items():
-    Radiobutton(businessCard, text = text, variable = variableCardsPaperWeight, value = value).pack()
+optCardsOverprint = ["4+0", "4+4"]
+varCardsOverprint = StringVar()
+varCardsOverprint.set(optCardsOverprint[0])
+optCardsOverprintMenu = OptionMenu(businessCard, varCardsOverprint, *optCardsOverprint)
+optCardsOverprintMenu.pack()
 
-labelNameCardsOverprint = Label(businessCard, text = "Zadruk:")
-labelNameCardsOverprint.pack()
+labelCardsFoil = Label(businessCard, text = "Foliowanie:")
+labelCardsFoil.pack()
 
-variableCardsOverprint = StringVar()
+optCardsFoil = ["Brak", "1+0", "1+1"]
+varCardsFoil = StringVar()
+varCardsFoil.set(optCardsFoil[0])
+optCardsFoil = OptionMenu(businessCard, varCardsFoil, *optCardsFoil)
+optCardsFoil.pack()
 
-valuesCardsOverprint = {"4+0":0, "4+4":1}
+buttonCardsCost = Button(businessCard, text = "Oblicz koszt", command = cardsCost)
+buttonCardsCost.pack()
 
-for (text, value) in valuesCardsOverprint.items():
-    Radiobutton(businessCard, text = text, variable = variableCardsOverprint, value = value).pack()
+textCardsCost = Text(businessCard, height = 1, width = 20)
+textCardsCost.pack()
 
-labelNameCardsFoil = Label(businessCard, text = "Foliowanie:")
-labelNameCardsFoil.pack()
+labelCardsProfit = Label(businessCard, text = "Stały koszt 7%")
+labelCardsProfit.pack()
 
-variableCardsFoil = StringVar()
-
-valuesCardsFoil = {"Brak":0, "1+0":1, "1+1":2}
-
-for (text, value) in valuesCardsFoil.items():
-    Radiobutton(businessCard, text = text, variable = variableCardsFoil, value = value).pack()
-
-buttonBusinessCardsCost = Button(businessCard, text = "Oblicz koszt", command = businessCardCost)
-buttonBusinessCardsCost.pack()
-
-textBusinessCardsCost = Text(businessCard, height = 1, width = 20)
-textBusinessCardsCost.pack()
-
-labelNameCardsProfit = Label(businessCard, text = "Stały koszt 7%")
-labelNameCardsProfit.pack()
-
-textBusinessCardsCostProfit = Text(businessCard, height = 1, width = 20)
-textBusinessCardsCostProfit.pack()
+textCardsCostProfit = Text(businessCard, height = 1, width = 20)
+textCardsCostProfit.pack()
 
 #posters
 def posterCost():
-    finalCost = 0
     cost = 0
-    if variablePosterSize.get() == "0":
-        cost = float(entryPostersQuantityPatterns.get()) * float(entryPosterQuantityValue.get()) / 2
+    if varPosterSize.get() == "A4":
+        cost = float(entryPostersPatterns.get()) * float(entryPosterQuantity.get()) / 2
     else:
-        cost = float(entryPostersQuantityPatterns.get()) * float(entryPosterQuantityValue.get()) / 1
+        cost = float(entryPostersPatterns.get()) * float(entryPosterQuantity.get()) / 1
     cenaPrzelotuPracownik = 0
-    if variablePostersOverprint.get() == "0":
-        cenaPrzelotuPracownik = 2 * (przelotSerwisowy + kosztWliczonyDoPrzelotu) + drukKosztPracownikaLokal36Sra3NaMin
+    if varPosterOverprint.get() == "4+0":
+        cenaPrzelotuPracownik = (2 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + drukKosztPracownikaLokal36Sra3NaMin
     else:
-        cenaPrzelotuPracownik = 4 * (przelotSerwisowy + kosztWliczonyDoPrzelotu) + drukKosztPracownikaLokal36Sra3NaMin
-    foliowanie = 0
-    if (variablePosterPaperWeight.get() == "3" or variablePosterPaperWeight.get() == "4" or variablePosterPaperWeight.get() == "5" or variablePosterPaperWeight.get() == "6") and variablePostersFoil.get() == "1":
-        foliowanie = cenaFoliiZaPrzelotSra310 + ryczaltZakkupFoliarkiDoliczonydoPrzelotu10Sra3 + foliaKosztPracownikaLokal2PrzelotyNaMin
-    elif (variablePosterPaperWeight.get() == "3" or variablePosterPaperWeight.get() == "4" or variablePosterPaperWeight.get() == "5" or variablePosterPaperWeight.get() == "6") and variablePostersFoil.get() == "2":
-        foliowanie = (cenaFoliiZaPrzelotSra310 + ryczaltZakkupFoliarkiDoliczonydoPrzelotu10Sra3 + foliaKosztPracownikaLokal2PrzelotyNaMin) * 2
+        cenaPrzelotuPracownik = (4 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + drukKosztPracownikaLokal36Sra3NaMin
+    foliowanie = float(cenaFoliiZaPrzelotSra310) + float(ryczaltZakupFoliarkiDoliczonydoPrzelotu10Sra3) + float(foliaKosztPracownikaLokal2PrzelotyNaMin)
+    if (varPosterPaperWeight.get() == "200" or varPosterPaperWeight.get() == "250" or varPosterPaperWeight.get() == "300" or varPosterPaperWeight.get() == "350") and varPosterFoil.get() == "1+0" and varPosterOverprint.get() == "4+0":
+        foliowanie = foliowanie
+    elif (varPosterPaperWeight.get() == "200" or varPosterPaperWeight.get() == "250" or varPosterPaperWeight.get() == "300" or varPosterPaperWeight.get() == "350") and varPosterFoil.get() == "1+1" and varPosterOverprint.get() == "4+4":
+        foliowanie = foliowanie * 2 + drukKosztPracownikaLokal36Sra3NaMin
+    elif varPosterPaperWeight.get() == "Ozdobny" and varPosterOverprint.get() == "4+4":
+        foliowanie = drukKosztPracownikaLokal36Sra3NaMin
     else:
         foliowanie = 0
-    # odtąd pisać dalej, dodać cięcie w zależności od rozmiaru
-    if variablePosterPaperWeight.get() == "0":
-        finalCost = (cost * (cenaPapieruSra3130g + cenaPrzelotuPracownik + foliowanie))
-    elif variablePosterPaperWeight.get() == "1":
-        cenaPrzelotuPracownik = cenaPapieruSra3150g * (przelotSerwisowy + kosztWliczonyDoPrzelotu)
-    elif variablePosterPaperWeight.get() == "2":
-        cenaPrzelotuPracownik = cenaPapieruSra3170g * (przelotSerwisowy + kosztWliczonyDoPrzelotu)
-    elif variablePosterPaperWeight.get() == "3":
-        cenaPrzelotuPracownik = cenaPapieruSra3200g * (przelotSerwisowy + kosztWliczonyDoPrzelotu)
-    elif variablePosterPaperWeight.get() == "4":
-        cenaPrzelotuPracownik = cenaPapieruSra3250g * (przelotSerwisowy + kosztWliczonyDoPrzelotu)
-    elif variablePosterPaperWeight.get() == "5":
-        cenaPrzelotuPracownik = cenaPapieruSra3300g * (przelotSerwisowy + kosztWliczonyDoPrzelotu)
+    ciecie = 0
+    if varPosterSize.get() == "A4":
+        ciecie = (ciecieA4PracownikLokal + ryczaltZaGilotyneNozMin) * float(entryPostersPatterns.get())
     else:
-        cenaPrzelotuPracownik = cenaPapieruSra3350g * (przelotSerwisowy + kosztWliczonyDoPrzelotu) + drukKosztPracownikaLokal36Sra3NaMin
+        ciecie = (ciecieA3PracownikLokal + ryczaltZaGilotyneNozMin) * float(entryPostersPatterns.get())
+    finalCost = 0
+    if varPosterPaperWeight.get() == "130":
+        finalCost = (cost * (cenaPapieruSra3130g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+    elif varPosterPaperWeight.get() == "150":
+        finalCost = (cost * (cenaPapieruSra3150g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+    elif varPosterPaperWeight.get() == "170":
+        finalCost = (cost * (cenaPapieruSra3170g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+    elif varPosterPaperWeight.get() == "200":
+        finalCost = (cost * (cenaPapieruSra3200g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+    elif varPosterPaperWeight.get() == "250":
+        finalCost = (cost * (cenaPapieruSra3250g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+    elif varPosterPaperWeight.get() == "300":
+        finalCost = (cost * (cenaPapieruSra3300g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+    elif varPosterPaperWeight.get() == "350":
+        finalCost = (cost * (cenaPapieruSra3350g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+    else:
+        finalCost = (cost * (cenaPapieruSra3Ozdobny + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+    finalCost = round(finalCost, 2)
     textPosterCost.delete("1.0", END)
-    textPosterCost.insert(END, cenaPrzelotuPracownik)
+    textPosterCost.insert(END, finalCost)
 
-labelNamePosterPatterns = Label(poster, text = "Ilość wzorców:")
-labelNamePosterPatterns.pack()
+labelPosterPatterns = Label(poster, text = "Ilość wzorów:")
+labelPosterPatterns.pack()
 
-entryPostersQuantityPatterns = StringVar()
-entryPostersQuantityPatterns = Entry(poster, textvariable = entryPostersQuantityPatterns)
-entryPostersQuantityPatterns.pack()
+entryPostersPatterns = StringVar()
+entryPostersPatterns = Entry(poster, textvariable = entryPostersPatterns)
+entryPostersPatterns.pack()
 
-labelNamePosterQuantity = Label(poster, text = "Ilość:")
-labelNamePosterQuantity.pack()
+labelPosterQuantity = Label(poster, text = "Ilość:")
+labelPosterQuantity.pack()
 
-entryPosterQuantityValue = StringVar()
-entryPosterQuantityValue = Entry(poster, textvariable = entryPosterQuantityValue)
-entryPosterQuantityValue.pack()
+entryPosterQuantity = StringVar()
+entryPosterQuantity = Entry(poster, textvariable = entryPosterQuantity)
+entryPosterQuantity.pack()
 
-labelNamePosterSize = Label(poster, text = "Wielkość:")
-labelNamePosterSize.pack()
+labelPosterSize = Label(poster, text = "Wielkość:")
+labelPosterSize.pack()
 
-variablePosterSize = IntVar()
+optPosterSize = ["A4", "A3"]
+varPosterSize = StringVar()
+varPosterSize.set(optPosterSize[0])
+optPosterSize = OptionMenu(poster, varPosterSize, *optPosterSize)
+optPosterSize.pack()
 
-valuesPosterSize = {"A4":0, "A3":1}
+labelPosterPaperWeight = Label(poster, text = "Gramatura:")
+labelPosterPaperWeight.pack()
 
-for (text, value) in valuesPosterSize.items():
-    Radiobutton(poster, text = text, variable = variablePosterSize, value = value).pack()
+optPosterPaperWeight = ["130", "150", "170", "200", "250", "300", "350", "Ozdobny"]
+varPosterPaperWeight = StringVar()
+varPosterPaperWeight.set(optPosterPaperWeight[0])
+optPosterPaperWeight = OptionMenu(poster, varPosterPaperWeight, *optPosterPaperWeight)
+optPosterPaperWeight.pack()
 
-labelNamePosterPaperWeight = Label(poster, text = "Gramatura:")
-labelNamePosterPaperWeight.pack()
+labelPostersOverprint = Label(poster, text = "Zadruk:")
+labelPostersOverprint.pack()
 
-variablePosterPaperWeight = IntVar()
+optPosterOverprint = ["4+0", "4+4"]
+varPosterOverprint = StringVar()
+varPosterOverprint.set(optPosterOverprint[0])
+optPosterOverprint = OptionMenu(poster, varPosterOverprint, *optPosterOverprint)
+optPosterOverprint.pack()
 
-valuesPosterPaperWeight = {"130":0, "150":1, "170":2, "200":3, "250":4, "300":5, "350":6, "Ozdobny":7}
+labelPosterFoil = Label(poster, text = "Foliowanie:")
+labelPosterFoil.pack()
 
-for (text, value) in valuesPosterPaperWeight.items(): 
-    Radiobutton(poster, text = text, variable = variablePosterPaperWeight, value = value).pack()
-
-labelNamePostersOverprint = Label(poster, text = "Zadruk:")
-labelNamePostersOverprint.pack()
-
-variablePostersOverprint = StringVar()
-
-valuesPostersOverprint = {"4+0":0, "4+4":1}
-
-for (text, value) in valuesPostersOverprint.items():
-    Radiobutton(poster, text = text, variable = variablePostersOverprint, value = value).pack()
-
-labelNamePostersFoil = Label(poster, text = "Foliowanie:")
-labelNamePostersFoil.pack()
-
-variablePostersFoil = StringVar()
-
-valuesPostersFoil = {"Brak":0, "1+0":1, "1+1":2}
-
-for (text, value) in valuesPostersFoil.items():
-    Radiobutton(poster, text = text, variable = valuesPostersFoil, value = value).pack()
+optPosterFoil = ["Brak", "1+0", "1+1"]
+varPosterFoil = StringVar()
+varPosterFoil.set(optPosterFoil[0])
+optPosterFoil = OptionMenu(poster, varPosterFoil, *optPosterFoil)
+optPosterFoil.pack()
 
 buttonPosterCost = Button(poster, text = "Oblicz koszt", command = posterCost)
 buttonPosterCost.pack()
@@ -242,8 +245,8 @@ buttonPosterCost.pack()
 textPosterCost = Text(poster, height = 1, width = 20)
 textPosterCost.pack()
 
-labelNamePostersProfit = Label(poster, text = "Stały koszt 7%")
-labelNamePostersProfit.pack()
+labelPostersProfit = Label(poster, text = "Stały koszt 7%")
+labelPostersProfit.pack()
 
 textPostersCostProfit = Text(poster, height = 1, width = 20)
 textPostersCostProfit.pack()
