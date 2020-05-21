@@ -2,25 +2,22 @@ from tkinter import Tk, StringVar, Text, Pack, ttk, Frame, Entry, Label, Button,
 
 calcWindow = Tk()
 calcWindow.title("Calc")
-calcWindow.geometry("450x500")
+calcWindow.geometry("350x500")
 
 calcWork = ttk.Notebook(calcWindow)
 calcWork.pack()
 
 poster = Frame(calcWork)
-banner = Frame(calcWork)
 flyer = Frame(calcWork)
-foil = Frame(calcWork)
+# foil = Frame(calcWork)
 rollUp = Frame(calcWork)
 businessCard = Frame(calcWork)
 
 calcWork.add(businessCard, text = "Wizytówki")
 calcWork.add(poster, text = "Plakaty")
 calcWork.add(flyer, text = "Ulotki")
-calcWork.add(banner, text = "Banery")
-calcWork.add(foil, text = "Folie")
 calcWork.add(rollUp, text = "Roll-upy")
-
+# calcWork.add(foil, text = "Folie")
 
 #podstawowe stałe
 sra3Ryza130g = 48.47
@@ -373,106 +370,100 @@ labelFlyersProfit.pack()
 textFlyerCostProfit = Text(flyer, height = 1, width = 20)
 textFlyerCostProfit.pack()
 
-#banners
-def bannerCost():
-    cost = float(entryBannerQuantityValue.get()) * (float(variableBannerSize.get()) / 10)
-    finalCost = round(cost + (cost * (float(entryBannerProfit.get()) / 100)), 2)
-    textBannerCost.delete("1.0", END)
-    textBannerCost.insert(END, finalCost)
+#roll-ups
+blockoutSico420gm = 5.85
+blockoutSico530gm = 7.60
+cenaMaterial420gm = 2.5 * blockoutSico420gm
+cenaMaterial420gm120 = 2.5 * blockoutSico420gm * 1.2
+cenaMaterial530gm150 = 2.5 * blockoutSico530gm * 1.5
+kosztAtramentM2 = 2.21
+cenaWydruk85M2 = 0.85 * kosztAtramentM2 * 2.1
+cenaWydruk100M2 = 1.0 * kosztAtramentM2 * 2.1
+cenaWydruk120M2 = 1.2 * kosztAtramentM2 * 2.1
+cenaWydruk150M2 = 1.5 * kosztAtramentM2 * 2.1
+ryczaltMaszyna = 1.5
+ryczaltSerwis85M2 = ryczaltMaszyna * 0.85 * 2.1
+ryczaltSerwis100M2 = ryczaltMaszyna * 1.0 * 2.1
+ryczaltSerwis120M2 = ryczaltMaszyna * 1.2 * 2.1
+ryczaltSerwis150M2 = ryczaltMaszyna * 1.5 * 2.1
+kosztKaseta85 = 35.4
+kosztKaseta100 = 38.9
+kosztKaseta120 = 68.0
+kosztKaseta150 = 84.0
+plikMediaZaladowanieTestGlowicy = 10.0
+czasObsMasDrukStawkaPrac = 4.0
+kosztPracownik85 = czasObsMasDrukStawkaPrac * 0.85 * 2.1
+kosztPracownik100 = czasObsMasDrukStawkaPrac * 1.0 * 2.1
+kosztPracownik120 = czasObsMasDrukStawkaPrac * 1.2 * 2.1
+kosztPracownik150 = czasObsMasDrukStawkaPrac * 1.5 * 2.1
+kosztPracCiecie = 4.0
+kosztPracCiecie150 = 8.0
+kosztPracMontazKaseta = 8.0
 
-labelNameBannerQuantity = Label(banner, text = "Ilość:")
-labelNameBannerQuantity.pack()
+def rollUpCost():
+    finalCost = 0
+    if varRollUpWidthThickness.get() == "85":
+        finalCost = (plikMediaZaladowanieTestGlowicy + pakowanie + (cenaMaterial420gm + cenaWydruk85M2 + ryczaltSerwis85M2 + kosztKaseta85 + kosztPracownik85 + kosztPracCiecie + kosztPracMontazKaseta) * float(entryRollUpQuantity.get())) * float(entryRollUpPattern.get())
+    elif varRollUpWidthThickness.get() == "100":
+        finalCost = (plikMediaZaladowanieTestGlowicy + pakowanie + (cenaMaterial420gm + cenaWydruk100M2 + ryczaltSerwis100M2 + kosztKaseta100 + kosztPracownik100 + kosztPracCiecie + kosztPracMontazKaseta) * float(entryRollUpQuantity.get())) * float(entryRollUpPattern.get())
+    elif varRollUpWidthThickness.get() == "120":
+        finalCost = (plikMediaZaladowanieTestGlowicy + pakowanie + (cenaMaterial420gm120 + cenaWydruk120M2 + ryczaltSerwis120M2 + kosztKaseta120 + kosztPracownik120 + kosztPracCiecie + kosztPracMontazKaseta) * float(entryRollUpQuantity.get())) * float(entryRollUpPattern.get())
+    elif varRollUpWidthThickness.get() == "150":
+        finalCost = (plikMediaZaladowanieTestGlowicy + pakowanie + (cenaMaterial530gm150 + cenaWydruk150M2 + ryczaltSerwis150M2 + kosztKaseta150 + kosztPracownik150 + kosztPracCiecie150 + kosztPracMontazKaseta) * float(entryRollUpQuantity.get())) * float(entryRollUpPattern.get())
+    else:
+        finalCost = 666.66    
+    finalCost = round(finalCost, 2)
+    finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
+    textRollUpCost.delete("1.0", END)
+    textRollUpCost.insert(END, finalCost)
+    textRollUpCostProfit.delete("1.0", END)
+    textRollUpCostProfit.insert(END, finalCostProfit)
 
-entryBannerQuantityValue = Entry(banner)
-entryBannerQuantityValue.pack()
+labelRollUpMedium = Label(rollUp, text = "Gramatura/medium:")
+labelRollUpMedium.pack()
 
-labelNameBannerSize = Label(banner, text = "Wielkość:")
-labelNameBannerSize.pack()
+optRollUpPattern = ["Baner", "Blockout"]
+varRollUpPattern = StringVar()
+varRollUpPattern.set(optRollUpPattern[0])
+optRollUpPattern = OptionMenu(rollUp, varRollUpPattern, *optRollUpPattern)
+optRollUpPattern.pack()
 
-variableBannerSize = IntVar()
+labelRollUpWidthThickness = Label(rollUp, text = "Szerokość/grubość:")
 
-valuesBannerSize = {"A0":11, "A1":12, "A2":13}
+optRollUpWidthThickness = ["85", "100", "120", "150", "200"]
+varRollUpWidthThickness = StringVar()
+varRollUpWidthThickness.set(optRollUpWidthThickness[0])
+optRollUpWidthThickness = OptionMenu(rollUp, varRollUpWidthThickness, *optRollUpWidthThickness)
+optRollUpWidthThickness.pack()
 
-for (text, value) in valuesBannerSize.items():
-    Radiobutton(banner, text = text, variable = variableBannerSize, value = value).pack()
+labelRollUpPattern = Label(rollUp, text = "Ilość wzorów:")
+labelRollUpPattern.pack()
 
-labelNameBannerProfit = Label(banner, text = "Marża:")
-labelNameBannerProfit.pack()
+entryRollUpPattern = StringVar()
+entryRollUpPattern = Entry(rollUp, textvariable = entryRollUpPattern)
+entryRollUpPattern.pack()
 
-entryBannerProfit = StringVar()
-entryBannerProfit = Entry(banner, textvariable = entryBannerProfit)
-entryBannerProfit.pack()
+labelRollUpQuantity = Label(rollUp, text = "Ilość:")
+labelRollUpQuantity.pack()
 
-buttonBannerCost = Button(banner, text = "Oblicz koszt", command = bannerCost)
-buttonBannerCost.pack()
+entryRollUpQuantity = StringVar()
+entryRollUpQuantity = Entry(rollUp, textvariable = entryRollUpQuantity)
+entryRollUpQuantity.pack()
 
-textBannerCost = Text(banner, height = 1, width = 20)
-textBannerCost.pack()
+buttonRollUpCost = Button(rollUp, text = "Oblicz koszt", command = rollUpCost)
+buttonRollUpCost.pack()
+
+textRollUpCost = Text(rollUp, height = 1, width = 20)
+textRollUpCost.pack()
+
+labelRollUpProfit = Label(rollUp, text = "Stały koszt 7%")
+labelRollUpProfit.pack()
+
+textRollUpCostProfit = Text(rollUp, height = 1, width = 20)
+textRollUpCostProfit.pack()
+
 
 
 #foils
-def foilCost():
-    cost = float(entryFoilQuantityValue.get()) * (float(variableFoilSize.get()) / 10) * (float(variableFoilContourCut.get()) / 10)
-    finalCost = round(cost + (cost * (float(entryFoilProfit.get()) / 100)), 2)
-    textFoilCost.delete("1.0", END)
-    textFoilCost.insert(END, finalCost)
-
-labelNameFoilQuantity = Label(foil, text = "Ilość:")
-labelNameFoilQuantity.pack()
-
-entryFoilQuantityValue = StringVar()
-entryFoilQuantityValue = Entry(foil, textvariable = entryFoilQuantityValue)
-entryFoilQuantityValue.pack()
-
-labelNameFoilSize = Label(foil, text = "Wielkość:")
-labelNameFoilSize.pack()
-
-variableFoilSize = IntVar()
-
-valuesFoilSize = {"A0":11, "A1":12, "A2":13}
-
-for (text, value) in valuesFoilSize.items():
-    Radiobutton(foil, text = text, variable = variableFoilSize, value = value).pack()
-
-labelNameFoilCounterCut = Label(foil, text = "Cięcie po obrysie:")
-labelNameFoilCounterCut.pack()
-
-variableFoilContourCut = IntVar()
-
-valuesFoilContourCut = {"Tak":15, "Nie":10}
-
-for (text, value) in valuesFoilContourCut.items():
-    Radiobutton(foil, text = text, variable = variableFoilContourCut, value = value).pack()
-
-labelNameFoilProfit = Label(foil, text = "Marża:")
-labelNameFoilProfit.pack()
-
-entryFoilProfit = StringVar()
-entryFoilProfit = Entry(foil, textvariable = entryFoilProfit)
-entryFoilProfit.pack()
-
-buttonFoilCost = Button(foil, text = "Oblicz koszt", command = foilCost)
-buttonFoilCost.pack()
-
-textFoilCost = Text(foil, height = 1, width = 20)
-textFoilCost.pack()
-
-#roll-ups
-labelNameRollUpQuantity = Label(rollUp, text = "Ilość:")
-labelNameRollUpQuantity.pack()
-
-entryRollUpQuantityValue = StringVar()
-entryRollUpQuantityValue = Entry(rollUp, textvariable = entryRollUpQuantityValue)
-entryRollUpQuantityValue.pack()
-
-labelNameRollUpSize = Label(rollUp, text = "Wielkość kasety:")
-labelNameRollUpSize.pack()
-
-variableRollUpSize = IntVar()
-
-valuesRollUpSize = {"1":12, "2":13}
-
-for (text, value) in valuesRollUpSize.items():
-    Radiobutton(rollUp, text = text, variable = variableRollUpSize, value = value).pack()
 
 calcWindow.mainloop()
