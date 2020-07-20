@@ -2,7 +2,7 @@ from tkinter import Tk, StringVar, Text, Pack, ttk, Frame, Entry, Label, Button,
 
 calcWindow = Tk()
 calcWindow.title("Calc")
-calcWindow.geometry("350x500")
+calcWindow.geometry("350x450")
 
 calcWork = ttk.Notebook(calcWindow)
 calcWork.pack()
@@ -73,6 +73,7 @@ iloscNaArkuszu = 20.0
 def cardsCost():
     ciecieWizytowek = float((ciecieKosztPracownika8MinutLokal + ryczaltZaGilotyneNozMin) * float(entryCardsPatterns.get()))
     cost1 = float(entryCardsPatterns.get()) * float(entryCardsQuantity.get()) / float(iloscNaArkuszu)
+    margin = round((float(entryCardsMargin.get()) / 100), 3)
     cenaPrzelotuPracownik = 0
     if varCardsOverprint.get() == "4+0":
         cenaPrzelotuPracownik = float(2 * (przelotSerwisowy + kosztWliczonyDoPrzelotu + drukKosztPracownikaLokal36Sra3NaMin))
@@ -90,10 +91,13 @@ def cardsCost():
     cost2 = float(cenaPapieruSra3350g) + float(cenaPrzelotuPracownik) + float(foliowanie)
     finalCost = round(((cost1 * cost2) + ciecieWizytowek + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min), 2)
     finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
-    textCardsCost.delete("1.0", END)
-    textCardsCost.insert(END, finalCost)
+    # textCardsCost.delete("1.0", END)
+    # textCardsCost.insert(END, finalCost)
+    finalCostMargin = round((finalCostProfit + (finalCostProfit * margin)), 3)
     textCardsCostProfit.delete("1.0", END)
     textCardsCostProfit.insert(END, finalCostProfit)
+    textCardsMarginFinal.delete("1.0", END)
+    textCardsMarginFinal.insert(END, finalCostMargin)
 
 labelCardsPatterns = Label(businessCard, text = "Ilość wzorów:")
 labelCardsPatterns.pack()
@@ -139,14 +143,27 @@ optCardsFoil.pack()
 buttonCardsCost = Button(businessCard, text = "Oblicz koszt", command = cardsCost)
 buttonCardsCost.pack()
 
-textCardsCost = Text(businessCard, height = 1, width = 20)
-textCardsCost.pack()
+# textCardsCost = Text(businessCard, height = 1, width = 20)
+# textCardsCost.pack()
 
-labelCardsProfit = Label(businessCard, text = "Stały koszt 7%")
+labelCardsMargin = Label(businessCard, text = "Marża:")
+labelCardsMargin.pack()
+
+entryCardsMargin = StringVar()
+entryCardsMargin = Entry(businessCard, textvariable = entryCardsMargin)
+entryCardsMargin.pack()
+
+labelCardsProfit = Label(businessCard, text = "Nasz koszt:")
 labelCardsProfit.pack()
 
 textCardsCostProfit = Text(businessCard, height = 1, width = 20)
 textCardsCostProfit.pack()
+
+labelCardsMarginFinal = Label(businessCard, text = "Finalny koszt:")
+labelCardsMarginFinal.pack()
+
+textCardsMarginFinal = Text(businessCard, height = 1, width = 20)
+textCardsMarginFinal.pack()
 
 #posters
 def posterCost():
