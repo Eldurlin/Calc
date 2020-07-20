@@ -2,7 +2,7 @@ from tkinter import Tk, StringVar, Text, Pack, ttk, Frame, Entry, Label, Button,
 
 calcWindow = Tk()
 calcWindow.title("Calc")
-calcWindow.geometry("350x450")
+calcWindow.geometry("350x550")
 
 calcWork = ttk.Notebook(calcWindow)
 calcWork.pack()
@@ -153,7 +153,7 @@ entryCardsMargin = StringVar()
 entryCardsMargin = Entry(businessCard, textvariable = entryCardsMargin)
 entryCardsMargin.pack()
 
-labelCardsProfit = Label(businessCard, text = "Nasz koszt:")
+labelCardsProfit = Label(businessCard, text = "Nasz koszt 7%:")
 labelCardsProfit.pack()
 
 textCardsCostProfit = Text(businessCard, height = 1, width = 20)
@@ -168,6 +168,7 @@ textCardsMarginFinal.pack()
 #posters
 def posterCost():
     cost = 0
+    margin = round((float(entryPosterMargin.get()) / 100), 3)
     if varPosterSize.get() == "A4":
         cost = float(entryPostersPatterns.get()) * float(entryPosterQuantity.get()) / 2
     else:
@@ -209,8 +210,12 @@ def posterCost():
     else:
         finalCost = (cost * (cenaPapieruSra3Ozdobny + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
     finalCost = round(finalCost, 2)
-    textPosterCost.delete("1.0", END)
-    textPosterCost.insert(END, finalCost)
+    finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
+    finalCostMargin = round((finalCostProfit + (finalCostProfit * margin)), 3)
+    textPosterCostProfit.delete("1.0", END)
+    textPosterCostProfit.insert(END, finalCost)
+    textPosterMarginFinal.delete("1.0", END)
+    textPosterMarginFinal.insert(END, finalCostMargin)
 
 labelPosterPatterns = Label(poster, text = "Ilość wzorów:")
 labelPosterPatterns.pack()
@@ -265,17 +270,28 @@ optPosterFoil.pack()
 buttonPosterCost = Button(poster, text = "Oblicz koszt", command = posterCost)
 buttonPosterCost.pack()
 
-textPosterCost = Text(poster, height = 1, width = 20)
-textPosterCost.pack()
+labelPosterMargin = Label(poster, text = "Marża:")
+labelPosterMargin.pack()
 
-labelPostersProfit = Label(poster, text = "Stały koszt 7%")
+entryPosterMargin = StringVar()
+entryPosterMargin = Entry(poster, textvariable = entryPosterMargin)
+entryPosterMargin.pack()
+
+labelPostersProfit = Label(poster, text = "Nasz koszt 7%:")
 labelPostersProfit.pack()
 
-textPostersCostProfit = Text(poster, height = 1, width = 20)
-textPostersCostProfit.pack()
+textPosterCostProfit = Text(poster, height = 1, width = 20)
+textPosterCostProfit.pack()
+
+labelPosterMarginFinal = Label(poster, text = "Finalny koszt:")
+labelPosterMarginFinal.pack()
+
+textPosterMarginFinal = Text(poster, height = 1, width = 20)
+textPosterMarginFinal.pack()
 
 #flyers
 def flyerCost():
+    margin = round((float(entryFlyerMargin.get()) / 100), 3)
     cost = 0
     if varFlyerSize.get() == "A4":
         cost = float(entryFlyerPatterns.get()) * float(entryFlyerQuantity.get()) / 2
@@ -327,10 +343,13 @@ def flyerCost():
         finalCost = (cost * (cenaPapieruSra3Ozdobny + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
     finalCost = round(finalCost, 2)
     finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
-    textFlyerCost.delete("1.0", END)
-    textFlyerCost.insert(END, finalCost)
+    finalCostMargin = round((finalCostProfit + (finalCostProfit * margin)), 3)
+    # textFlyerCost.delete("1.0", END)
+    # textFlyerCost.insert(END, finalCost)
     textFlyerCostProfit.delete("1.0", END)
     textFlyerCostProfit.insert(END, finalCostProfit)
+    textFlyerMarginFinal.delete("1.0", END)
+    textFlyerMarginFinal.insert(END, finalCostMargin)
 
 labelFlyerPatterns = Label(flyer, text = "Ilość wzorów:")
 labelFlyerPatterns.pack()
@@ -385,14 +404,27 @@ optFlyerFoil.pack()
 buttonFlyerCost = Button(flyer, text = "Oblicz koszt", command = flyerCost)
 buttonFlyerCost.pack()
 
-textFlyerCost = Text(flyer, height = 1, width = 20)
-textFlyerCost.pack()
+# textFlyerCost = Text(flyer, height = 1, width = 20)
+# textFlyerCost.pack()
 
-labelFlyersProfit = Label(flyer, text = "Stały koszt 7%")
-labelFlyersProfit.pack()
+labelFlyerMargin = Label(flyer, text = "Marża:")
+labelFlyerMargin.pack()
+
+entryFlyerMargin = StringVar()
+entryFlyerMargin = Entry(flyer, textvariable = entryFlyerMargin)
+entryFlyerMargin.pack()
+
+labelFlyerProfit = Label(flyer, text = "Nasz koszt 7%:")
+labelFlyerProfit.pack()
 
 textFlyerCostProfit = Text(flyer, height = 1, width = 20)
 textFlyerCostProfit.pack()
+
+labelFlyerMarginFinal = Label(flyer, text = "Finalny koszt:")
+labelFlyerMarginFinal.pack()
+
+textFlyerMarginFinal = Text(flyer, height = 1, width = 20)
+textFlyerMarginFinal.pack()
 
 #roll-ups
 blockoutSico420gm = 5.85
@@ -425,6 +457,7 @@ kosztPracCiecie150 = 8.0
 kosztPracMontazKaseta = 8.0
 
 def rollUpCost():
+    margin = round((float(entryRollUpMargin.get()) / 100), 3)
     finalCost = 0
     if varRollUpWidthThickness.get() == "85":
         finalCost = (plikMediaZaladowanieTestGlowicy + pakowanie + (cenaMaterial420gm + cenaWydruk85M2 + ryczaltSerwis85M2 + kosztKaseta85 + kosztPracownik85 + kosztPracCiecie + kosztPracMontazKaseta) * float(entryRollUpQuantity.get())) * float(entryRollUpPattern.get())
@@ -438,10 +471,13 @@ def rollUpCost():
         finalCost = 666.66    
     finalCost = round(finalCost, 2)
     finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
-    textRollUpCost.delete("1.0", END)
-    textRollUpCost.insert(END, finalCost)
+    finalCostMargin = round((finalCostProfit + (finalCostProfit * margin)), 3)
+    # textRollUpCost.delete("1.0", END)
+    # textRollUpCost.insert(END, finalCost)
     textRollUpCostProfit.delete("1.0", END)
     textRollUpCostProfit.insert(END, finalCostProfit)
+    textRollUpMarginFinal.delete("1.0", END)
+    textRollUpMarginFinal.insert(END, finalCostMargin)
 
 labelRollUpMedium = Label(rollUp, text = "Gramatura/medium:")
 labelRollUpMedium.pack()
@@ -477,14 +513,27 @@ entryRollUpQuantity.pack()
 buttonRollUpCost = Button(rollUp, text = "Oblicz koszt", command = rollUpCost)
 buttonRollUpCost.pack()
 
-textRollUpCost = Text(rollUp, height = 1, width = 20)
-textRollUpCost.pack()
+# textRollUpCost = Text(rollUp, height = 1, width = 20)
+# textRollUpCost.pack()
 
-labelRollUpProfit = Label(rollUp, text = "Stały koszt 7%")
+labelRollUpMargin = Label(rollUp, text = "Marża:")
+labelRollUpMargin.pack()
+
+entryRollUpMargin = StringVar()
+entryRollUpMargin = Entry(rollUp, textvariable = entryRollUpMargin)
+entryRollUpMargin.pack()
+
+labelRollUpProfit = Label(rollUp, text = "Nasz koszt 7%:")
 labelRollUpProfit.pack()
 
 textRollUpCostProfit = Text(rollUp, height = 1, width = 20)
 textRollUpCostProfit.pack()
+
+labelRollUpMarginFinal = Label(rollUp, text = "Finalny koszt:")
+labelRollUpMarginFinal.pack()
+
+textRollUpMarginFinal = Text(rollUp, height = 1, width = 20)
+textRollUpMarginFinal.pack()
 
 #folded flyers do zrobienia składanie i zmiany danych
 def foldedFlyerCost():
