@@ -456,6 +456,8 @@ kosztPracCiecie = 4.0
 kosztPracCiecie150 = 8.0
 kosztPracMontazKaseta = 8.0
 
+#usunąć gramaturę baner bo nie korzysta
+
 def rollUpCost():
     margin = round((float(entryRollUpMargin.get()) / 100), 3)
     finalCost = 0
@@ -479,14 +481,14 @@ def rollUpCost():
     textRollUpMarginFinal.delete("1.0", END)
     textRollUpMarginFinal.insert(END, finalCostMargin)
 
-labelRollUpMedium = Label(rollUp, text = "Gramatura/medium:")
-labelRollUpMedium.pack()
+# labelRollUpMedium = Label(rollUp, text = "Gramatura/medium:")
+# labelRollUpMedium.pack()
 
-optRollUpPattern = ["Baner", "Blockout"]
-varRollUpPattern = StringVar()
-varRollUpPattern.set(optRollUpPattern[0])
-optRollUpPattern = OptionMenu(rollUp, varRollUpPattern, *optRollUpPattern)
-optRollUpPattern.pack()
+# optRollUpPattern = ["Baner", "Blockout"]
+# varRollUpPattern = StringVar()
+# varRollUpPattern.set(optRollUpPattern[0])
+# optRollUpPattern = OptionMenu(rollUp, varRollUpPattern, *optRollUpPattern)
+# optRollUpPattern.pack()
 
 labelRollUpWidthThickness = Label(rollUp, text = "Szerokość/grubość:")
 
@@ -538,11 +540,13 @@ textRollUpMarginFinal.pack()
 #folded flyers do zrobienia składanie i zmiany danych
 def foldedFlyerCost():
     cost = 0
-    if varFoldedFlyerSize.get() == "A4":
+    if varFoldedFlyerSize.get() == "A3 do A4":
+        cost = float(entryFoldedFlyerPatterns.get()) * float(entryFoldedFlyerQuantity.get()) / 1
+    elif varFoldedFlyerSize.get() == "A4 do A5" or varFoldedFlyerSize.get() == "28 do 14, 29 do 14,5, 30 do 15" or varFoldedFlyerSize.get() == "A4 do DL" or varFoldedFlyerSize.get() == "2xDL do DL":
         cost = float(entryFoldedFlyerPatterns.get()) * float(entryFoldedFlyerQuantity.get()) / 2
-    elif varFoldedFlyerSize.get() == "A5" or varFoldedFlyerSize.get() == "14/14 14,5/14,5 15/15":
+    elif varFoldedFlyerSize.get() == "A5 do A6":
         cost = float(entryFoldedFlyerPatterns.get()) * float(entryFoldedFlyerQuantity.get()) / 4
-    elif varFoldedFlyerSize.get() == "A6":
+    elif varFoldedFlyerSize.get() == "A6 do A7":
         cost = float(entryFoldedFlyerPatterns.get()) * float(entryFoldedFlyerQuantity.get()) / 8
     else:
         cost = float(entryFoldedFlyerPatterns.get()) * float(entryFoldedFlyerQuantity.get()) / 6
@@ -561,11 +565,11 @@ def foldedFlyerCost():
     else:
         foliowanie = 0
     ciecie = 0
-    if varFoldedFlyerSize.get() == "A4":
+    if varFoldedFlyerSize.get() == "A3 do A4":
         ciecie = (ciecieA4PracownikLokal + ryczaltZaGilotyneNozMin) * float(entryFoldedFlyerPatterns.get())
-    elif varFoldedFlyerSize.get() == "A5" or varFoldedFlyerSize.get() == "14/14 14,5/14,5 15/15":
+    elif varFoldedFlyerSize.get() == "A4 do A5" or varFoldedFlyerSize.get() == "28 do 14, 29 do 14,5, 30 do 15":
         ciecie = (ciecieA5PracownikLokal + ryczaltZaGilotyneNozMin) * float(entryFoldedFlyerPatterns.get())
-    elif varFoldedFlyerSize.get() == "A6":
+    elif varFoldedFlyerSize.get() == "A5 do A6":
         ciecie = (ciecieA6PracownikLokal + ryczaltZaGilotyneNozMin) * float(entryFoldedFlyerPatterns.get())
     else:
         ciecie = (ciecieDlPracownikLokal + ryczaltZaGilotyneNozMin) * float(entryFoldedFlyerPatterns.get())
@@ -607,10 +611,19 @@ entryFoldedFlyerQuantity = StringVar()
 entryFoldedFlyerQuantity = Entry(foldedFlyer, textvariable = entryFoldedFlyerQuantity)
 entryFoldedFlyerQuantity.pack()
 
+labelFoldedFlyerFold = Label(foldedFlyer, text = "Składanie/bigowanie:")
+labelFoldedFlyerFold.pack()
+
+optFoldedFlyerFold = ["Tylko big", "Składanie + big"]
+varFoldedFlyerFold = StringVar()
+varFoldedFlyerFold.set(optFoldedFlyerFold[0])
+optFoldedFlyerFold = OptionMenu(foldedFlyer, varFoldedFlyerFold, *optFoldedFlyerFold)
+optFoldedFlyerFold.pack()
+
 labelFoldedFlyerSize = Label(foldedFlyer, text = "Wielkość:")
 labelFoldedFlyerSize.pack()
 
-optFoldedFlyerSize = ["A4", "A5", "A6", "DL", "14/14 14,5/14,5 15/15"]
+optFoldedFlyerSize = ["A3 do A4", "A4 do A5", "A5 do A6", "A6 do A7", "A4 do DL", "2xDL do DL", "28 do 14, 29 do 14,5, 30 do 15"]
 varFoldedFlyerSize = StringVar()
 varFoldedFlyerSize.set(optFoldedFlyerSize[0])
 optFoldedFlyerSize = OptionMenu(foldedFlyer, varFoldedFlyerSize, *optFoldedFlyerSize)
