@@ -20,9 +20,7 @@ calcWork.add(rollUp, text = "Roll-upy")
 calcWork.add(foldedFlyer, text = "Ulotki składane")
 
 #ulotki składane - ogarnąć
-#dodać marżę wszędzie
 #odstępy
-#stały koszt = koszt a pod tym marża
 #niestandardowa wielkość
 #zmiana kosztów papieru etc
 # ff6600
@@ -91,8 +89,6 @@ def cardsCost():
     cost2 = float(cenaPapieruSra3350g) + float(cenaPrzelotuPracownik) + float(foliowanie)
     finalCost = round(((cost1 * cost2) + ciecieWizytowek + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min), 2)
     finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
-    # textCardsCost.delete("1.0", END)
-    # textCardsCost.insert(END, finalCost)
     finalCostMargin = round((finalCostProfit + (finalCostProfit * margin)), 3)
     textCardsCostProfit.delete("1.0", END)
     textCardsCostProfit.insert(END, finalCostProfit)
@@ -140,18 +136,15 @@ varCardsFoil.set(optCardsFoil[0])
 optCardsFoil = OptionMenu(businessCard, varCardsFoil, *optCardsFoil)
 optCardsFoil.pack()
 
-buttonCardsCost = Button(businessCard, text = "Oblicz koszt", command = cardsCost)
-buttonCardsCost.pack()
-
-# textCardsCost = Text(businessCard, height = 1, width = 20)
-# textCardsCost.pack()
-
 labelCardsMargin = Label(businessCard, text = "Marża:")
 labelCardsMargin.pack()
 
 entryCardsMargin = StringVar()
 entryCardsMargin = Entry(businessCard, textvariable = entryCardsMargin)
 entryCardsMargin.pack()
+
+buttonCardsCost = Button(businessCard, text = "Oblicz", command = cardsCost)
+buttonCardsCost.pack()
 
 labelCardsProfit = Label(businessCard, text = "Nasz koszt 7%:")
 labelCardsProfit.pack()
@@ -267,15 +260,15 @@ varPosterFoil.set(optPosterFoil[0])
 optPosterFoil = OptionMenu(poster, varPosterFoil, *optPosterFoil)
 optPosterFoil.pack()
 
-buttonPosterCost = Button(poster, text = "Oblicz koszt", command = posterCost)
-buttonPosterCost.pack()
-
 labelPosterMargin = Label(poster, text = "Marża:")
 labelPosterMargin.pack()
 
 entryPosterMargin = StringVar()
 entryPosterMargin = Entry(poster, textvariable = entryPosterMargin)
 entryPosterMargin.pack()
+
+buttonPosterCost = Button(poster, text = "Oblicz", command = posterCost)
+buttonPosterCost.pack()
 
 labelPostersProfit = Label(poster, text = "Nasz koszt 7%:")
 labelPostersProfit.pack()
@@ -344,8 +337,6 @@ def flyerCost():
     finalCost = round(finalCost, 2)
     finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
     finalCostMargin = round((finalCostProfit + (finalCostProfit * margin)), 3)
-    # textFlyerCost.delete("1.0", END)
-    # textFlyerCost.insert(END, finalCost)
     textFlyerCostProfit.delete("1.0", END)
     textFlyerCostProfit.insert(END, finalCostProfit)
     textFlyerMarginFinal.delete("1.0", END)
@@ -401,18 +392,15 @@ varFlyerFoil.set(optFlyerFoil[0])
 optFlyerFoil = OptionMenu(flyer, varFlyerFoil, *optFlyerFoil)
 optFlyerFoil.pack()
 
-buttonFlyerCost = Button(flyer, text = "Oblicz koszt", command = flyerCost)
-buttonFlyerCost.pack()
-
-# textFlyerCost = Text(flyer, height = 1, width = 20)
-# textFlyerCost.pack()
-
 labelFlyerMargin = Label(flyer, text = "Marża:")
 labelFlyerMargin.pack()
 
 entryFlyerMargin = StringVar()
 entryFlyerMargin = Entry(flyer, textvariable = entryFlyerMargin)
 entryFlyerMargin.pack()
+
+buttonFlyerCost = Button(flyer, text = "Oblicz", command = flyerCost)
+buttonFlyerCost.pack()
 
 labelFlyerProfit = Label(flyer, text = "Nasz koszt 7%:")
 labelFlyerProfit.pack()
@@ -456,8 +444,6 @@ kosztPracCiecie = 4.0
 kosztPracCiecie150 = 8.0
 kosztPracMontazKaseta = 8.0
 
-#usunąć gramaturę baner bo nie korzysta
-
 def rollUpCost():
     margin = round((float(entryRollUpMargin.get()) / 100), 3)
     finalCost = 0
@@ -474,21 +460,11 @@ def rollUpCost():
     finalCost = round(finalCost, 2)
     finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
     finalCostMargin = round((finalCostProfit + (finalCostProfit * margin)), 3)
-    # textRollUpCost.delete("1.0", END)
-    # textRollUpCost.insert(END, finalCost)
+
     textRollUpCostProfit.delete("1.0", END)
     textRollUpCostProfit.insert(END, finalCostProfit)
     textRollUpMarginFinal.delete("1.0", END)
     textRollUpMarginFinal.insert(END, finalCostMargin)
-
-# labelRollUpMedium = Label(rollUp, text = "Gramatura/medium:")
-# labelRollUpMedium.pack()
-
-# optRollUpPattern = ["Baner", "Blockout"]
-# varRollUpPattern = StringVar()
-# varRollUpPattern.set(optRollUpPattern[0])
-# optRollUpPattern = OptionMenu(rollUp, varRollUpPattern, *optRollUpPattern)
-# optRollUpPattern.pack()
 
 labelRollUpWidthThickness = Label(rollUp, text = "Szerokość/grubość:")
 
@@ -512,18 +488,15 @@ entryRollUpQuantity = StringVar()
 entryRollUpQuantity = Entry(rollUp, textvariable = entryRollUpQuantity)
 entryRollUpQuantity.pack()
 
-buttonRollUpCost = Button(rollUp, text = "Oblicz koszt", command = rollUpCost)
-buttonRollUpCost.pack()
-
-# textRollUpCost = Text(rollUp, height = 1, width = 20)
-# textRollUpCost.pack()
-
 labelRollUpMargin = Label(rollUp, text = "Marża:")
 labelRollUpMargin.pack()
 
 entryRollUpMargin = StringVar()
 entryRollUpMargin = Entry(rollUp, textvariable = entryRollUpMargin)
 entryRollUpMargin.pack()
+
+buttonRollUpCost = Button(rollUp, text = "Oblicz", command = rollUpCost)
+buttonRollUpCost.pack()
 
 labelRollUpProfit = Label(rollUp, text = "Nasz koszt 7%:")
 labelRollUpProfit.pack()
@@ -537,7 +510,14 @@ labelRollUpMarginFinal.pack()
 textRollUpMarginFinal = Text(rollUp, height = 1, width = 20)
 textRollUpMarginFinal.pack()
 
-#folded flyers do zrobienia składanie i zmiany danych
+#folded flyers
+skladanieMaszynowe = 1 / 18
+przygotowanieMaszynyDoSkladania = 5.00
+ryczaltFalcerkaSkladarka = 10.00
+skladanieReczne = 6 / 60
+bigowanie = 7.2 / 60
+przygotowanieBigownicy = 5.00
+
 def foldedFlyerCost():
     cost = 0
     if varFoldedFlyerSize.get() == "A3 do A4":
@@ -546,10 +526,8 @@ def foldedFlyerCost():
         cost = float(entryFoldedFlyerPatterns.get()) * float(entryFoldedFlyerQuantity.get()) / 2
     elif varFoldedFlyerSize.get() == "A5 do A6":
         cost = float(entryFoldedFlyerPatterns.get()) * float(entryFoldedFlyerQuantity.get()) / 4
-    elif varFoldedFlyerSize.get() == "A6 do A7":
-        cost = float(entryFoldedFlyerPatterns.get()) * float(entryFoldedFlyerQuantity.get()) / 8
     else:
-        cost = float(entryFoldedFlyerPatterns.get()) * float(entryFoldedFlyerQuantity.get()) / 6
+        cost = float(entryFoldedFlyerPatterns.get()) * float(entryFoldedFlyerQuantity.get()) / 8
     cenaPrzelotuPracownik = 0
     if varFoldedFlyerOverprint.get() == "4+0":
         cenaPrzelotuPracownik = (2 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + drukKosztPracownikaLokal36Sra3NaMin
@@ -565,7 +543,7 @@ def foldedFlyerCost():
     else:
         foliowanie = 0
     ciecie = 0
-    if varFoldedFlyerSize.get() == "A3 do A4":
+    if varFoldedFlyerSize.get() == "A3 do A4" or varFoldedFlyerSize.get() == "A4 do DL" or varFoldedFlyerSize.get() == "2xDL do DL":
         ciecie = (ciecieA4PracownikLokal + ryczaltZaGilotyneNozMin) * float(entryFoldedFlyerPatterns.get())
     elif varFoldedFlyerSize.get() == "A4 do A5" or varFoldedFlyerSize.get() == "28 do 14, 29 do 14,5, 30 do 15":
         ciecie = (ciecieA5PracownikLokal + ryczaltZaGilotyneNozMin) * float(entryFoldedFlyerPatterns.get())
@@ -573,27 +551,33 @@ def foldedFlyerCost():
         ciecie = (ciecieA6PracownikLokal + ryczaltZaGilotyneNozMin) * float(entryFoldedFlyerPatterns.get())
     else:
         ciecie = (ciecieDlPracownikLokal + ryczaltZaGilotyneNozMin) * float(entryFoldedFlyerPatterns.get())
+    foldBig = 0
+    if varFoldedFlyerFold.get() == "Tylko big":
+        foldBig = round(przygotowanieBigownicy + bigowanie * float(entryFoldedFlyerQuantity.get()), 3)
+    elif varFoldedFlyerFold.get() == "Składanie + big" and varFoldedFlyerSize.get() == "A4 do DL":
+        foldBig = round(przygotowanieBigownicy + bigowanie * float(entryFoldedFlyerQuantity.get()) + (skladanieReczne * float(entryFoldedFlyerQuantity.get()) * 2), 3)
+    else:
+        foldBig = round(przygotowanieBigownicy + bigowanie * float(entryFoldedFlyerQuantity.get()) + skladanieReczne * float(entryFoldedFlyerQuantity.get()), 3)
+    foldMachineArm = round(ryczaltFalcerkaSkladarka + przygotowanieMaszynyDoSkladania + skladanieMaszynowe * float(entryFoldedFlyerQuantity.get()), 3)
     finalCost = 0
     if varFoldedFlyerPaperWeight.get() == "130":
-        finalCost = (cost * (cenaPapieruSra3130g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+        finalCost = ((cost * (cenaPapieruSra3130g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min) + foldMachineArm)
     elif varFoldedFlyerPaperWeight.get() == "150":
-        finalCost = (cost * (cenaPapieruSra3150g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+        finalCost = ((cost * (cenaPapieruSra3150g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min) + foldMachineArm)
     elif varFoldedFlyerPaperWeight.get() == "170":
-        finalCost = (cost * (cenaPapieruSra3170g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+        finalCost = ((cost * (cenaPapieruSra3170g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min) + foldBig)
     elif varFoldedFlyerPaperWeight.get() == "200":
-        finalCost = (cost * (cenaPapieruSra3200g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+        finalCost = ((cost * (cenaPapieruSra3200g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min) + foldBig)
     elif varFoldedFlyerPaperWeight.get() == "250":
-        finalCost = (cost * (cenaPapieruSra3250g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+        finalCost = ((cost * (cenaPapieruSra3250g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min) + foldBig)
     elif varFoldedFlyerPaperWeight.get() == "300":
-        finalCost = (cost * (cenaPapieruSra3300g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+        finalCost = ((cost * (cenaPapieruSra3300g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min) + foldBig)
     elif varFoldedFlyerPaperWeight.get() == "350":
-        finalCost = (cost * (cenaPapieruSra3350g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+        finalCost = ((cost * (cenaPapieruSra3350g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min) + foldBig)
     else:
-        finalCost = (cost * (cenaPapieruSra3Ozdobny + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+        finalCost = ((cost * (cenaPapieruSra3Ozdobny + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min) + foldBig)
     finalCost = round(finalCost, 2)
     finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
-    textFoldedFlyerCost.delete("1.0", END)
-    textFoldedFlyerCost.insert(END, finalCost)
     textFoldedFlyerCostProfit.delete("1.0", END)
     textFoldedFlyerCostProfit.insert(END, finalCostProfit)
 
@@ -656,16 +640,26 @@ varFoldedFlyerFoil.set(optFoldedFlyerFoil[0])
 optFoldedFlyerFoil = OptionMenu(foldedFlyer, varFoldedFlyerFoil, *optFoldedFlyerFoil)
 optFoldedFlyerFoil.pack()
 
-buttonFoldedFlyerCost = Button(foldedFlyer, text = "Oblicz koszt", command = foldedFlyerCost)
+labelFoldedFlyerMargin = Label(foldedFlyer, text = "Marża:")
+labelFoldedFlyerMargin.pack()
+
+entryFoldedFlyerMargin = StringVar()
+entryFoldedFlyerMargin = Entry(foldedFlyer, textvariable = entryFoldedFlyerMargin)
+entryFoldedFlyerMargin.pack()
+
+buttonFoldedFlyerCost = Button(foldedFlyer, text = "Oblicz", command = foldedFlyerCost)
 buttonFoldedFlyerCost.pack()
 
-textFoldedFlyerCost = Text(foldedFlyer, height = 1, width = 20)
-textFoldedFlyerCost.pack()
-
-labelFoldedFlyersProfit = Label(foldedFlyer, text = "Stały koszt 7%")
-labelFoldedFlyersProfit.pack()
+labelFoldedFlyerProfit = Label(foldedFlyer, text = "Nasz koszt 7%:")
+labelFoldedFlyerProfit.pack()
 
 textFoldedFlyerCostProfit = Text(foldedFlyer, height = 1, width = 20)
 textFoldedFlyerCostProfit.pack()
+
+labelFoldedFlyerMarginFinal = Label(foldedFlyer, text = "Finalny koszt:")
+labelFoldedFlyerMarginFinal.pack()
+
+textFoldedFlyerMarginFinal = Text(foldedFlyer, height = 1, width = 20)
+textFoldedFlyerMarginFinal.pack()
 
 calcWindow.mainloop()
