@@ -19,7 +19,6 @@ calcWork.add(flyer, text = "Ulotki")
 calcWork.add(rollUp, text = "Roll-upy")
 calcWork.add(foldedFlyer, text = "Ulotki składane")
 
-#ulotki składane - ogarnąć
 #odstępy
 #niestandardowa wielkość
 #zmiana kosztów papieru etc
@@ -90,10 +89,13 @@ def cardsCost():
     finalCost = round(((cost1 * cost2) + ciecieWizytowek + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min), 2)
     finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
     finalCostMargin = round((finalCostProfit + (finalCostProfit * margin)), 3)
+    finalCostMarginVAT = round(finalCostMargin * 1.23, 3)
     textCardsCostProfit.delete("1.0", END)
     textCardsCostProfit.insert(END, finalCostProfit)
     textCardsMarginFinal.delete("1.0", END)
     textCardsMarginFinal.insert(END, finalCostMargin)
+    textCardsMarginFinalVAT.delete("1.0", END)
+    textCardsMarginFinalVAT.insert(END, finalCostMarginVAT)
 
 labelCardsPatterns = Label(businessCard, text = "Ilość wzorów:")
 labelCardsPatterns.pack()
@@ -158,6 +160,12 @@ labelCardsMarginFinal.pack()
 textCardsMarginFinal = Text(businessCard, height = 1, width = 20)
 textCardsMarginFinal.pack()
 
+labelCardsMarginFinalVAT = Label(businessCard, text = "Finalny koszt + VAT:")
+labelCardsMarginFinalVAT.pack()
+
+textCardsMarginFinalVAT = Text(businessCard, height = 1, width = 20)
+textCardsMarginFinalVAT.pack()
+
 #posters
 def posterCost():
     cost = 0
@@ -205,10 +213,13 @@ def posterCost():
     finalCost = round(finalCost, 2)
     finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
     finalCostMargin = round((finalCostProfit + (finalCostProfit * margin)), 3)
+    finalCostMarginVAT = round(finalCostMargin * 1.23, 3)
     textPosterCostProfit.delete("1.0", END)
     textPosterCostProfit.insert(END, finalCost)
     textPosterMarginFinal.delete("1.0", END)
     textPosterMarginFinal.insert(END, finalCostMargin)
+    textPosterMarginFinalVAT.delete("1.0", END)
+    textPosterMarginFinalVAT.insert(END, finalCostMarginVAT)
 
 labelPosterPatterns = Label(poster, text = "Ilość wzorów:")
 labelPosterPatterns.pack()
@@ -282,6 +293,12 @@ labelPosterMarginFinal.pack()
 textPosterMarginFinal = Text(poster, height = 1, width = 20)
 textPosterMarginFinal.pack()
 
+labelPosterMarginFinalVAT = Label(poster, text = "Finalny koszt + VAT:")
+labelPosterMarginFinalVAT.pack()
+
+textPosterMarginFinalVAT = Text(poster, height = 1, width = 20)
+textPosterMarginFinalVAT.pack()
+
 #flyers
 def flyerCost():
     margin = round((float(entryFlyerMargin.get()) / 100), 3)
@@ -337,10 +354,13 @@ def flyerCost():
     finalCost = round(finalCost, 2)
     finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
     finalCostMargin = round((finalCostProfit + (finalCostProfit * margin)), 3)
+    finalCostMarginVAT = round(finalCostMargin * 1.23, 3)
     textFlyerCostProfit.delete("1.0", END)
     textFlyerCostProfit.insert(END, finalCostProfit)
     textFlyerMarginFinal.delete("1.0", END)
     textFlyerMarginFinal.insert(END, finalCostMargin)
+    textFlyerMarginFinalVAT.delete("1.0", END)
+    textFlyerMarginFinalVAT.insert(END, finalCostMarginVAT)
 
 labelFlyerPatterns = Label(flyer, text = "Ilość wzorów:")
 labelFlyerPatterns.pack()
@@ -414,6 +434,12 @@ labelFlyerMarginFinal.pack()
 textFlyerMarginFinal = Text(flyer, height = 1, width = 20)
 textFlyerMarginFinal.pack()
 
+labelFlyerMarginFinalVAT = Label(flyer, text = "Finalny koszt + VAT:")
+labelFlyerMarginFinalVAT.pack()
+
+textFlyerMarginFinalVAT = Text(flyer, height = 1, width = 20)
+textFlyerMarginFinalVAT.pack()
+
 #roll-ups
 blockoutSico420gm = 5.85
 blockoutSico530gm = 7.60
@@ -460,11 +486,13 @@ def rollUpCost():
     finalCost = round(finalCost, 2)
     finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
     finalCostMargin = round((finalCostProfit + (finalCostProfit * margin)), 3)
-
+    finalCostMarginVAT = round(finalCostMargin * 1.23, 3)
     textRollUpCostProfit.delete("1.0", END)
     textRollUpCostProfit.insert(END, finalCostProfit)
     textRollUpMarginFinal.delete("1.0", END)
-    textRollUpMarginFinal.insert(END, finalCostMargin)
+    textRollUpMarginFinal.insert(END, finalCostMargin) 
+    textRollUpMarginFinalVAT.delete("1.0", END)
+    textRollUpMarginFinalVAT.insert(END, finalCostMarginVAT)
 
 labelRollUpWidthThickness = Label(rollUp, text = "Szerokość/grubość:")
 
@@ -510,6 +538,12 @@ labelRollUpMarginFinal.pack()
 textRollUpMarginFinal = Text(rollUp, height = 1, width = 20)
 textRollUpMarginFinal.pack()
 
+labelRollUpMarginFinalVAT = Label(rollUp, text = "Finalny koszt + VAT:")
+labelRollUpMarginFinalVAT.pack()
+
+textRollUpMarginFinalVAT = Text(rollUp, height = 1, width = 20)
+textRollUpMarginFinalVAT.pack()
+
 #folded flyers
 skladanieMaszynowe = 1 / 18
 przygotowanieMaszynyDoSkladania = 5.00
@@ -520,6 +554,8 @@ przygotowanieBigownicy = 5.00
 
 
 def foldedFlyerCost():
+    margin = round((float(entryFoldedFlyerMargin.get()) / 100), 3)
+
     cenaPrzelotuPracownik = 0
     if varFoldedFlyerOverprint.get() == "4+0" and (varFoldedFlyerPaperWeight.get() == "130" or varFoldedFlyerPaperWeight.get() == "150" or varFoldedFlyerPaperWeight.get() == "300" or varFoldedFlyerPaperWeight.get() == "350"):
         cenaPrzelotuPracownik = (2 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + drukKosztPracownikaLokal36Sra3NaMin
@@ -594,8 +630,14 @@ def foldedFlyerCost():
     
     finalCost = round(finalCost, 2)
     finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
+    finalCostProfitMargin = round((finalCostProfit + (finalCostProfit * margin)), 3)
+    finalCostProfitMarginVAT = round(finalCostProfitMargin * 1.23, 3)
     textFoldedFlyerCostProfit.delete("1.0", END)
     textFoldedFlyerCostProfit.insert(END, finalCostProfit)
+    textFoldedFlyerMarginFinal.delete("1.0", END)
+    textFoldedFlyerMarginFinal.insert(END, finalCostProfitMargin)
+    textFoldedFlyerMarginFinalVAT.delete("1.0", END)
+    textFoldedFlyerMarginFinalVAT.insert(END, finalCostProfitMarginVAT)
 
 labelFoldedFlyerPatterns = Label(foldedFlyer, text = "Ilość wzorów:")
 labelFoldedFlyerPatterns.pack()
@@ -677,5 +719,11 @@ labelFoldedFlyerMarginFinal.pack()
 
 textFoldedFlyerMarginFinal = Text(foldedFlyer, height = 1, width = 20)
 textFoldedFlyerMarginFinal.pack()
+
+labelFoldedFlyerMarginFinalVAT = Label(foldedFlyer, text = "Finalny koszt + VAT:")
+labelFoldedFlyerMarginFinalVAT.pack()
+
+textFoldedFlyerMarginFinalVAT = Text(foldedFlyer, height = 1, width = 20)
+textFoldedFlyerMarginFinalVAT.pack()
 
 calcWindow.mainloop()
