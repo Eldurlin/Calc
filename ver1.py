@@ -518,64 +518,80 @@ skladanieReczne = 6 / 60
 bigowanie = 7.2 / 60
 przygotowanieBigownicy = 5.00
 
+
 def foldedFlyerCost():
-    cost = 0
-    if varFoldedFlyerSize.get() == "A3 do A4":
-        cost = float(entryFoldedFlyerPatterns.get()) * float(entryFoldedFlyerQuantity.get()) / 1
-    elif varFoldedFlyerSize.get() == "A4 do A5" or varFoldedFlyerSize.get() == "28 do 14, 29 do 14,5, 30 do 15" or varFoldedFlyerSize.get() == "A4 do DL" or varFoldedFlyerSize.get() == "2xDL do DL":
-        cost = float(entryFoldedFlyerPatterns.get()) * float(entryFoldedFlyerQuantity.get()) / 2
-    elif varFoldedFlyerSize.get() == "A5 do A6":
-        cost = float(entryFoldedFlyerPatterns.get()) * float(entryFoldedFlyerQuantity.get()) / 4
-    else:
-        cost = float(entryFoldedFlyerPatterns.get()) * float(entryFoldedFlyerQuantity.get()) / 8
     cenaPrzelotuPracownik = 0
-    if varFoldedFlyerOverprint.get() == "4+0":
+    if varFoldedFlyerOverprint.get() == "4+0" and (varFoldedFlyerPaperWeight.get() == "130" or varFoldedFlyerPaperWeight.get() == "150" or varFoldedFlyerPaperWeight.get() == "300" or varFoldedFlyerPaperWeight.get() == "350"):
         cenaPrzelotuPracownik = (2 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + drukKosztPracownikaLokal36Sra3NaMin
+    elif varFoldedFlyerOverprint.get() == "4+0" and (varFoldedFlyerPaperWeight.get() == "170" or varFoldedFlyerPaperWeight.get() == "200" or varFoldedFlyerPaperWeight.get() == "250"):
+        cenaPrzelotuPracownik = (2 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + (2 * drukKosztPracownikaLokal36Sra3NaMin)
+    elif varFoldedFlyerOverprint.get() == "4+4" and (varFoldedFlyerPaperWeight.get() == "170" or varFoldedFlyerPaperWeight.get() == "200" or varFoldedFlyerPaperWeight.get() == "250"):
+        cenaPrzelotuPracownik = (4 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + (2 * drukKosztPracownikaLokal36Sra3NaMin)
+    elif varFoldedFlyerOverprint.get() == "4+4" and varFoldedFlyerPaperWeight.get() == "350" and varFoldedFlyerFoil.get() == "1+1":
+        cenaPrzelotuPracownik = (4 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + (2 * drukKosztPracownikaLokal36Sra3NaMin)
+    elif varFoldedFlyerOverprint.get() == "4+0" and varFoldedFlyerPaperWeight.get() == "200" and varFoldedFlyerFoil.get() == "1+0":
+        cenaPrzelotuPracownik = (2 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + drukKosztPracownikaLokal36Sra3NaMin
+    elif varFoldedFlyerOverprint.get() == "4+0" and (varFoldedFlyerPaperWeight.get() == "250" or varFoldedFlyerPaperWeight.get() == "300" or varFoldedFlyerPaperWeight.get() == "350") and varFoldedFlyerFoil.get() == "1+0":
+        cenaPrzelotuPracownik = (2 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + (2 * drukKosztPracownikaLokal36Sra3NaMin)
+    elif varFoldedFlyerOverprint.get() == "4+4" and (varFoldedFlyerPaperWeight.get() == "250" or varFoldedFlyerPaperWeight.get() == "300" or varFoldedFlyerPaperWeight.get() == "350") and varFoldedFlyerFoil.get() == "1+1":
+        cenaPrzelotuPracownik = (4 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + (2 * drukKosztPracownikaLokal36Sra3NaMin)
     else:
         cenaPrzelotuPracownik = (4 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + drukKosztPracownikaLokal36Sra3NaMin
+
     foliowanie = float(cenaFoliiZaPrzelotSra310) + float(ryczaltZakupFoliarkiDoliczonydoPrzelotu10Sra3) + float(foliaKosztPracownikaLokal2PrzelotyNaMin)
     if (varFoldedFlyerPaperWeight.get() == "200" or varFoldedFlyerPaperWeight.get() == "250" or varFoldedFlyerPaperWeight.get() == "300" or varFoldedFlyerPaperWeight.get() == "350") and varFoldedFlyerFoil.get() == "1+0" and varFoldedFlyerOverprint.get() == "4+0":
         foliowanie = foliowanie
     elif (varFoldedFlyerPaperWeight.get() == "200" or varFoldedFlyerPaperWeight.get() == "250" or varFoldedFlyerPaperWeight.get() == "300" or varFoldedFlyerPaperWeight.get() == "350") and varFoldedFlyerFoil.get() == "1+1" and varFoldedFlyerOverprint.get() == "4+4":
-        foliowanie = foliowanie * 2 + drukKosztPracownikaLokal36Sra3NaMin
-    elif varFoldedFlyerPaperWeight.get() == "Ozdobny" and varFoldedFlyerOverprint.get() == "4+4":
-        foliowanie = drukKosztPracownikaLokal36Sra3NaMin
+        foliowanie = foliowanie * 2
     else:
         foliowanie = 0
+    
     ciecie = 0
-    if varFoldedFlyerSize.get() == "A3 do A4" or varFoldedFlyerSize.get() == "A4 do DL" or varFoldedFlyerSize.get() == "2xDL do DL":
-        ciecie = (ciecieA4PracownikLokal + ryczaltZaGilotyneNozMin) * float(entryFoldedFlyerPatterns.get())
-    elif varFoldedFlyerSize.get() == "A4 do A5" or varFoldedFlyerSize.get() == "28 do 14, 29 do 14,5, 30 do 15":
+    if varFoldedFlyerSize.get() == "A5 do A6":
         ciecie = (ciecieA5PracownikLokal + ryczaltZaGilotyneNozMin) * float(entryFoldedFlyerPatterns.get())
-    elif varFoldedFlyerSize.get() == "A5 do A6":
+    elif varFoldedFlyerSize.get() == "A6 do A7":
         ciecie = (ciecieA6PracownikLokal + ryczaltZaGilotyneNozMin) * float(entryFoldedFlyerPatterns.get())
     else:
-        ciecie = (ciecieDlPracownikLokal + ryczaltZaGilotyneNozMin) * float(entryFoldedFlyerPatterns.get())
+        ciecie = ((ciecieA4PracownikLokal + ryczaltZaGilotyneNozMin) * float(entryFoldedFlyerPatterns.get()))
+    
+    foldMachineArm = round(ryczaltFalcerkaSkladarka + przygotowanieMaszynyDoSkladania + (skladanieMaszynowe * float(entryFoldedFlyerQuantity.get())), 3)
+    
     foldBig = 0
     if varFoldedFlyerFold.get() == "Tylko big":
-        foldBig = round(przygotowanieBigownicy + bigowanie * float(entryFoldedFlyerQuantity.get()), 3)
+        foldBig = round(przygotowanieBigownicy + (bigowanie * float(entryFoldedFlyerQuantity.get())), 3)
     elif varFoldedFlyerFold.get() == "Składanie + big" and varFoldedFlyerSize.get() == "A4 do DL":
-        foldBig = round(przygotowanieBigownicy + bigowanie * float(entryFoldedFlyerQuantity.get()) + (skladanieReczne * float(entryFoldedFlyerQuantity.get()) * 2), 3)
+        foldBig = round(przygotowanieBigownicy + (bigowanie * float(entryFoldedFlyerQuantity.get())) + (skladanieReczne * float(entryFoldedFlyerQuantity.get()) * 2), 3)
     else:
-        foldBig = round(przygotowanieBigownicy + bigowanie * float(entryFoldedFlyerQuantity.get()) + skladanieReczne * float(entryFoldedFlyerQuantity.get()), 3)
-    foldMachineArm = round(ryczaltFalcerkaSkladarka + przygotowanieMaszynyDoSkladania + skladanieMaszynowe * float(entryFoldedFlyerQuantity.get()), 3)
+        foldBig = round(przygotowanieBigownicy + (bigowanie * float(entryFoldedFlyerQuantity.get())) + skladanieReczne * float(entryFoldedFlyerQuantity.get()), 3)
+       
+    cost = 0
+    if varFoldedFlyerSize.get() == "A3 do A4":
+        cost = float(entryFoldedFlyerPatterns.get()) * float(entryFoldedFlyerQuantity.get())
+    elif varFoldedFlyerSize.get() == "A5 do A6":
+        cost = float(entryFoldedFlyerPatterns.get()) * float(entryFoldedFlyerQuantity.get()) / 4
+    elif varFoldedFlyerSize.get() == "A6 do A7":
+        cost = float(entryFoldedFlyerPatterns.get()) * float(entryFoldedFlyerQuantity.get()) / 8
+    else:
+        cost = float(entryFoldedFlyerPatterns.get()) * float(entryFoldedFlyerQuantity.get()) / 2
+    
     finalCost = 0
     if varFoldedFlyerPaperWeight.get() == "130":
-        finalCost = ((cost * (cenaPapieruSra3130g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min) + foldMachineArm)
+        finalCost = (cost * (cenaPapieruSra3130g + cenaPrzelotuPracownik + foliowanie) + foldMachineArm + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
     elif varFoldedFlyerPaperWeight.get() == "150":
-        finalCost = ((cost * (cenaPapieruSra3150g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min) + foldMachineArm)
+        finalCost = (cost * (cenaPapieruSra3150g + cenaPrzelotuPracownik + foliowanie) + foldMachineArm + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
     elif varFoldedFlyerPaperWeight.get() == "170":
-        finalCost = ((cost * (cenaPapieruSra3170g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min) + foldBig)
+        finalCost = (cost * (cenaPapieruSra3170g + cenaPrzelotuPracownik + foliowanie) + foldBig + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
     elif varFoldedFlyerPaperWeight.get() == "200":
-        finalCost = ((cost * (cenaPapieruSra3200g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min) + foldBig)
+        finalCost = (cost * (cenaPapieruSra3200g + cenaPrzelotuPracownik + foliowanie) + foldBig + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
     elif varFoldedFlyerPaperWeight.get() == "250":
-        finalCost = ((cost * (cenaPapieruSra3250g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min) + foldBig)
+        finalCost = (cost * (cenaPapieruSra3250g + cenaPrzelotuPracownik + foliowanie) + foldBig + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
     elif varFoldedFlyerPaperWeight.get() == "300":
-        finalCost = ((cost * (cenaPapieruSra3300g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min) + foldBig)
+        finalCost = (cost * (cenaPapieruSra3300g + cenaPrzelotuPracownik + foliowanie) + foldBig + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
     elif varFoldedFlyerPaperWeight.get() == "350":
-        finalCost = ((cost * (cenaPapieruSra3350g + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min) + foldBig)
+        finalCost = (cost * (cenaPapieruSra3350g + cenaPrzelotuPracownik + foliowanie) + foldBig + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
     else:
-        finalCost = ((cost * (cenaPapieruSra3Ozdobny + cenaPrzelotuPracownik + foliowanie) + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min) + foldBig)
+        finalCost = (cost * (cenaPapieruSra3Ozdobny + cenaPrzelotuPracownik + foliowanie) + foldBig + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+    
     finalCost = round(finalCost, 2)
     finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
     textFoldedFlyerCostProfit.delete("1.0", END)
