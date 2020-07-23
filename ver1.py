@@ -2,7 +2,7 @@ from tkinter import Tk, StringVar, Text, Pack, ttk, Frame, Entry, Label, Button,
 
 calcWindow = Tk()
 calcWindow.title("Calc")
-calcWindow.geometry("350x550")
+calcWindow.geometry("450x600")
 
 calcWork = ttk.Notebook(calcWindow)
 calcWork.pack()
@@ -12,12 +12,14 @@ poster = Frame(calcWork)
 flyer = Frame(calcWork)
 rollUp = Frame(calcWork)
 foldedFlyer = Frame(calcWork)
+customFlyer = Frame(calcWork)
 
 calcWork.add(businessCard, text = "Wizytówki")
 calcWork.add(poster, text = "Plakaty")
 calcWork.add(flyer, text = "Ulotki")
 calcWork.add(rollUp, text = "Roll-upy")
 calcWork.add(foldedFlyer, text = "Ulotki składane")
+calcWork.add(customFlyer, text = "Ulotki niestandardowe")
 
 #odstępy
 #niestandardowa wielkość
@@ -55,6 +57,7 @@ leasingMaszyny = 985.0
 kosztWliczonyDoPrzelotu = leasingMaszyny / 10000.0
 drukKosztPracownika1MinutaLokalZa1Pracownika = 0.5 + 0.5
 drukKosztPracownikaLokal36Sra3NaMin = drukKosztPracownika1MinutaLokalZa1Pracownika / 30.0
+drukKosztPracownikaLokal36Sra3NaMinWiz = drukKosztPracownika1MinutaLokalZa1Pracownika / 36.0
 przygotowanieDoDrukuRozgrzanieMaszyny10Min = 30.0 / 60.0 * 10.0
 cenaFoliiZaPrzelotSra310 = 390.0 / 3000.0 / 2.0
 ryczaltZakupFoliarkiDoliczonydoPrzelotu10Sra3 = 0.2
@@ -73,9 +76,9 @@ def cardsCost():
     margin = round((float(entryCardsMargin.get()) / 100), 3)
     cenaPrzelotuPracownik = 0
     if varCardsOverprint.get() == "4+0":
-        cenaPrzelotuPracownik = float(2 * (przelotSerwisowy + kosztWliczonyDoPrzelotu + drukKosztPracownikaLokal36Sra3NaMin))
+        cenaPrzelotuPracownik = float(2 * (przelotSerwisowy + kosztWliczonyDoPrzelotu + drukKosztPracownikaLokal36Sra3NaMinWiz))
     else:
-        cenaPrzelotuPracownik = float(4 * (przelotSerwisowy + kosztWliczonyDoPrzelotu + drukKosztPracownikaLokal36Sra3NaMin))
+        cenaPrzelotuPracownik = float(4 * (przelotSerwisowy + kosztWliczonyDoPrzelotu + drukKosztPracownikaLokal36Sra3NaMinWiz))
     foliowanie = float(cenaFoliiZaPrzelotSra310) + float(ryczaltZakupFoliarkiDoliczonydoPrzelotu10Sra3) + float(foliaKosztPracownikaLokal2PrzelotyNaMin)
     if (varCardsOverprint.get() == "4+0" or varCardsOverprint.get() == "4+4") and varCardsFoil.get() == "Brak":
         foliowanie = 0
@@ -215,7 +218,7 @@ def posterCost():
     finalCostMargin = round((finalCostProfit + (finalCostProfit * margin)), 3)
     finalCostMarginVAT = round(finalCostMargin * 1.23, 3)
     textPosterCostProfit.delete("1.0", END)
-    textPosterCostProfit.insert(END, finalCost)
+    textPosterCostProfit.insert(END, finalCostProfit)
     textPosterMarginFinal.delete("1.0", END)
     textPosterMarginFinal.insert(END, finalCostMargin)
     textPosterMarginFinalVAT.delete("1.0", END)
@@ -494,14 +497,6 @@ def rollUpCost():
     textRollUpMarginFinalVAT.delete("1.0", END)
     textRollUpMarginFinalVAT.insert(END, finalCostMarginVAT)
 
-labelRollUpWidthThickness = Label(rollUp, text = "Szerokość/grubość:")
-
-optRollUpWidthThickness = ["85", "100", "120", "150", "200"]
-varRollUpWidthThickness = StringVar()
-varRollUpWidthThickness.set(optRollUpWidthThickness[0])
-optRollUpWidthThickness = OptionMenu(rollUp, varRollUpWidthThickness, *optRollUpWidthThickness)
-optRollUpWidthThickness.pack()
-
 labelRollUpPattern = Label(rollUp, text = "Ilość wzorów:")
 labelRollUpPattern.pack()
 
@@ -515,6 +510,14 @@ labelRollUpQuantity.pack()
 entryRollUpQuantity = StringVar()
 entryRollUpQuantity = Entry(rollUp, textvariable = entryRollUpQuantity)
 entryRollUpQuantity.pack()
+
+labelRollUpWidthThickness = Label(rollUp, text = "Szerokość/grubość:")
+
+optRollUpWidthThickness = ["85", "100", "120", "150"]
+varRollUpWidthThickness = StringVar()
+varRollUpWidthThickness.set(optRollUpWidthThickness[0])
+optRollUpWidthThickness = OptionMenu(rollUp, varRollUpWidthThickness, *optRollUpWidthThickness)
+optRollUpWidthThickness.pack()
 
 labelRollUpMargin = Label(rollUp, text = "Marża:")
 labelRollUpMargin.pack()
@@ -557,19 +560,11 @@ def foldedFlyerCost():
     margin = round((float(entryFoldedFlyerMargin.get()) / 100), 3)
 
     cenaPrzelotuPracownik = 0
-    if varFoldedFlyerOverprint.get() == "4+0" and (varFoldedFlyerPaperWeight.get() == "130" or varFoldedFlyerPaperWeight.get() == "150" or varFoldedFlyerPaperWeight.get() == "300" or varFoldedFlyerPaperWeight.get() == "350"):
+    if varFoldedFlyerOverprint.get() == "4+0":
         cenaPrzelotuPracownik = (2 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + drukKosztPracownikaLokal36Sra3NaMin
-    elif varFoldedFlyerOverprint.get() == "4+0" and (varFoldedFlyerPaperWeight.get() == "170" or varFoldedFlyerPaperWeight.get() == "200" or varFoldedFlyerPaperWeight.get() == "250"):
+    elif varFoldedFlyerOverprint.get() == "4+0" and varFoldedFlyerFoil.get() == "1+0":
         cenaPrzelotuPracownik = (2 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + (2 * drukKosztPracownikaLokal36Sra3NaMin)
-    elif varFoldedFlyerOverprint.get() == "4+4" and (varFoldedFlyerPaperWeight.get() == "170" or varFoldedFlyerPaperWeight.get() == "200" or varFoldedFlyerPaperWeight.get() == "250"):
-        cenaPrzelotuPracownik = (4 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + (2 * drukKosztPracownikaLokal36Sra3NaMin)
-    elif varFoldedFlyerOverprint.get() == "4+4" and varFoldedFlyerPaperWeight.get() == "350" and varFoldedFlyerFoil.get() == "1+1":
-        cenaPrzelotuPracownik = (4 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + (2 * drukKosztPracownikaLokal36Sra3NaMin)
-    elif varFoldedFlyerOverprint.get() == "4+0" and varFoldedFlyerPaperWeight.get() == "200" and varFoldedFlyerFoil.get() == "1+0":
-        cenaPrzelotuPracownik = (2 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + drukKosztPracownikaLokal36Sra3NaMin
-    elif varFoldedFlyerOverprint.get() == "4+0" and (varFoldedFlyerPaperWeight.get() == "250" or varFoldedFlyerPaperWeight.get() == "300" or varFoldedFlyerPaperWeight.get() == "350") and varFoldedFlyerFoil.get() == "1+0":
-        cenaPrzelotuPracownik = (2 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + (2 * drukKosztPracownikaLokal36Sra3NaMin)
-    elif varFoldedFlyerOverprint.get() == "4+4" and (varFoldedFlyerPaperWeight.get() == "250" or varFoldedFlyerPaperWeight.get() == "300" or varFoldedFlyerPaperWeight.get() == "350") and varFoldedFlyerFoil.get() == "1+1":
+    elif varFoldedFlyerOverprint.get() == "4+4" and varFoldedFlyerFoil.get() == "1+1":
         cenaPrzelotuPracownik = (4 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + (2 * drukKosztPracownikaLokal36Sra3NaMin)
     else:
         cenaPrzelotuPracownik = (4 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + drukKosztPracownikaLokal36Sra3NaMin
