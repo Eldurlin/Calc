@@ -15,7 +15,11 @@ rollUp = Frame(calcWork)
 foldedFlyer = Frame(calcWork)
 customFlyer = Frame(calcWork)
 banner = Frame(calcWork)
+foil = Frame(calcWork)
+owv = Frame(calcWork)
 
+calcWork.add(owv, text = "OWV")
+calcWork.add(foil, text = "Folia")
 calcWork.add(banner, text = "Banery")
 calcWork.add(customFlyer, text = "Ulotki niestandardowe")
 calcWork.add(businessCard, text = "Wizytówki")
@@ -185,9 +189,11 @@ def posterCost():
     else:
         cenaPrzelotuPracownik = (4 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + drukKosztPracownikaLokal36Sra3NaMin
     foliowanie = float(cenaFoliiZaPrzelotSra310) + float(ryczaltZakupFoliarkiDoliczonydoPrzelotu10Sra3) + float(foliaKosztPracownikaLokal2PrzelotyNaMin)
-    if (varPosterPaperWeight.get() == "200" or varPosterPaperWeight.get() == "250" or varPosterPaperWeight.get() == "300" or varPosterPaperWeight.get() == "350") and varPosterFoil.get() == "1+0" and varPosterOverprint.get() == "4+0":
+    if (varPosterPaperWeight.get() == "200" or varPosterPaperWeight.get() == "250" or varPosterPaperWeight.get() == "300"  
+        or varPosterPaperWeight.get() == "350") and varPosterFoil.get() == "1+0" and varPosterOverprint.get() == "4+0":
         foliowanie = foliowanie
-    elif (varPosterPaperWeight.get() == "200" or varPosterPaperWeight.get() == "250" or varPosterPaperWeight.get() == "300" or varPosterPaperWeight.get() == "350") and varPosterFoil.get() == "1+1" and varPosterOverprint.get() == "4+4":
+    elif (varPosterPaperWeight.get() == "200" or varPosterPaperWeight.get() == "250" or varPosterPaperWeight.get() == "300" 
+        or varPosterPaperWeight.get() == "350") and varPosterFoil.get() == "1+1" and varPosterOverprint.get() == "4+4":
         foliowanie = foliowanie * 2 + drukKosztPracownikaLokal36Sra3NaMin
     elif varPosterPaperWeight.get() == "Ozdobny" and varPosterOverprint.get() == "4+4":
         foliowanie = drukKosztPracownikaLokal36Sra3NaMin
@@ -322,9 +328,11 @@ def flyerCost():
     else:
         cenaPrzelotuPracownik = (4 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + drukKosztPracownikaLokal36Sra3NaMin
     foliowanie = float(cenaFoliiZaPrzelotSra310) + float(ryczaltZakupFoliarkiDoliczonydoPrzelotu10Sra3) + float(foliaKosztPracownikaLokal2PrzelotyNaMin)
-    if (varFlyerPaperWeight.get() == "200" or varFlyerPaperWeight.get() == "250" or varFlyerPaperWeight.get() == "300" or varFlyerPaperWeight.get() == "350") and varFlyerFoil.get() == "1+0" and varFlyerOverprint.get() == "4+0":
+    if (varFlyerPaperWeight.get() == "200" or varFlyerPaperWeight.get() == "250" or varFlyerPaperWeight.get() == "300" 
+        or varFlyerPaperWeight.get() == "350") and varFlyerFoil.get() == "1+0" and varFlyerOverprint.get() == "4+0":
         foliowanie = foliowanie
-    elif (varFlyerPaperWeight.get() == "200" or varFlyerPaperWeight.get() == "250" or varFlyerPaperWeight.get() == "300" or varFlyerPaperWeight.get() == "350") and varFlyerFoil.get() == "1+1" and varFlyerOverprint.get() == "4+4":
+    elif (varFlyerPaperWeight.get() == "200" or varFlyerPaperWeight.get() == "250" or varFlyerPaperWeight.get() == "300" 
+        or varFlyerPaperWeight.get() == "350") and varFlyerFoil.get() == "1+1" and varFlyerOverprint.get() == "4+4":
         foliowanie = foliowanie * 2 + drukKosztPracownikaLokal36Sra3NaMin
     elif varFlyerPaperWeight.get() == "Ozdobny" and varFlyerOverprint.get() == "4+4":
         foliowanie = drukKosztPracownikaLokal36Sra3NaMin
@@ -479,13 +487,17 @@ def rollUpCost():
     margin = round((float(entryRollUpMargin.get()) / 100), 3)
     finalCost = 0
     if varRollUpWidthThickness.get() == "85":
-        finalCost = (plikMediaZaladowanieTestGlowicy + pakowanie + (cenaMaterial420gm + cenaWydruk85M2 + ryczaltSerwis85M2 + kosztKaseta85 + kosztPracownik85 + kosztPracCiecie + kosztPracMontazKaseta) * float(entryRollUpQuantity.get())) * float(entryRollUpPattern.get())
+        finalCost = (plikMediaZaladowanieTestGlowicy + pakowanie + (cenaMaterial420gm + cenaWydruk85M2 + ryczaltSerwis85M2 + kosztKaseta85 
+            + kosztPracownik85 + kosztPracCiecie + kosztPracMontazKaseta) * float(entryRollUpQuantity.get())) * float(entryRollUpPattern.get())
     elif varRollUpWidthThickness.get() == "100":
-        finalCost = (plikMediaZaladowanieTestGlowicy + pakowanie + (cenaMaterial420gm + cenaWydruk100M2 + ryczaltSerwis100M2 + kosztKaseta100 + kosztPracownik100 + kosztPracCiecie + kosztPracMontazKaseta) * float(entryRollUpQuantity.get())) * float(entryRollUpPattern.get())
+        finalCost = (plikMediaZaladowanieTestGlowicy + pakowanie + (cenaMaterial420gm + cenaWydruk100M2 + ryczaltSerwis100M2 + kosztKaseta100 
+            + kosztPracownik100 + kosztPracCiecie + kosztPracMontazKaseta) * float(entryRollUpQuantity.get())) * float(entryRollUpPattern.get())
     elif varRollUpWidthThickness.get() == "120":
-        finalCost = (plikMediaZaladowanieTestGlowicy + pakowanie + (cenaMaterial420gm120 + cenaWydruk120M2 + ryczaltSerwis120M2 + kosztKaseta120 + kosztPracownik120 + kosztPracCiecie + kosztPracMontazKaseta) * float(entryRollUpQuantity.get())) * float(entryRollUpPattern.get())
+        finalCost = (plikMediaZaladowanieTestGlowicy + pakowanie + (cenaMaterial420gm120 + cenaWydruk120M2 + ryczaltSerwis120M2 + kosztKaseta120 
+            + kosztPracownik120 + kosztPracCiecie + kosztPracMontazKaseta) * float(entryRollUpQuantity.get())) * float(entryRollUpPattern.get())
     elif varRollUpWidthThickness.get() == "150":
-        finalCost = (plikMediaZaladowanieTestGlowicy + pakowanie + (cenaMaterial530gm150 + cenaWydruk150M2 + ryczaltSerwis150M2 + kosztKaseta150 + kosztPracownik150 + kosztPracCiecie150 + kosztPracMontazKaseta) * float(entryRollUpQuantity.get())) * float(entryRollUpPattern.get())
+        finalCost = (plikMediaZaladowanieTestGlowicy + pakowanie + (cenaMaterial530gm150 + cenaWydruk150M2 + ryczaltSerwis150M2 + kosztKaseta150 
+            + kosztPracownik150 + kosztPracCiecie150 + kosztPracMontazKaseta) * float(entryRollUpQuantity.get())) * float(entryRollUpPattern.get())
     else:
         finalCost = 666.66    
     finalCost = round(finalCost, 2)
@@ -571,9 +583,11 @@ def foldedFlyerCost():
         cenaPrzelotuPracownik = (4 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + drukKosztPracownikaLokal36Sra3NaMin
 
     foliowanie = float(cenaFoliiZaPrzelotSra310) + float(ryczaltZakupFoliarkiDoliczonydoPrzelotu10Sra3) + float(foliaKosztPracownikaLokal2PrzelotyNaMin)
-    if (varFoldedFlyerPaperWeight.get() == "200" or varFoldedFlyerPaperWeight.get() == "250" or varFoldedFlyerPaperWeight.get() == "300" or varFoldedFlyerPaperWeight.get() == "350") and varFoldedFlyerFoil.get() == "1+0" and varFoldedFlyerOverprint.get() == "4+0":
+    if (varFoldedFlyerPaperWeight.get() == "200" or varFoldedFlyerPaperWeight.get() == "250" or varFoldedFlyerPaperWeight.get() == "300" 
+        or varFoldedFlyerPaperWeight.get() == "350") and varFoldedFlyerFoil.get() == "1+0" and varFoldedFlyerOverprint.get() == "4+0":
         foliowanie = foliowanie
-    elif (varFoldedFlyerPaperWeight.get() == "200" or varFoldedFlyerPaperWeight.get() == "250" or varFoldedFlyerPaperWeight.get() == "300" or varFoldedFlyerPaperWeight.get() == "350") and varFoldedFlyerFoil.get() == "1+1" and varFoldedFlyerOverprint.get() == "4+4":
+    elif (varFoldedFlyerPaperWeight.get() == "200" or varFoldedFlyerPaperWeight.get() == "250" or varFoldedFlyerPaperWeight.get() == "300" 
+        or varFoldedFlyerPaperWeight.get() == "350") and varFoldedFlyerFoil.get() == "1+1" and varFoldedFlyerOverprint.get() == "4+4":
         foliowanie = foliowanie * 2
     else:
         foliowanie = 0
@@ -741,9 +755,11 @@ def customFlyerCost():
         cenaPrzelotuPracownik = (4 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + drukKosztPracownikaLokal36Sra3NaMin
 
     foliowanie = float(cenaFoliiZaPrzelotSra310) + float(ryczaltZakupFoliarkiDoliczonydoPrzelotu10Sra3) + float(foliaKosztPracownikaLokal2PrzelotyNaMin)
-    if (varCustomFlyerPaperWeight.get() == "200" or varCustomFlyerPaperWeight.get() == "250" or varCustomFlyerPaperWeight.get() == "300" or varCustomFlyerPaperWeight.get() == "350") and varCustomFlyerFoil.get() == "1+0" and varFoldedFlyerOverprint.get() == "4+0":
+    if (varCustomFlyerPaperWeight.get() == "200" or varCustomFlyerPaperWeight.get() == "250" or varCustomFlyerPaperWeight.get() == "300" 
+        or varCustomFlyerPaperWeight.get() == "350") and varCustomFlyerFoil.get() == "1+0" and varFoldedFlyerOverprint.get() == "4+0":
         foliowanie = foliowanie
-    elif (varCustomFlyerPaperWeight.get() == "200" or varCustomFlyerPaperWeight.get() == "250" or varCustomFlyerPaperWeight.get() == "300" or varCustomFlyerPaperWeight.get() == "350") and varCustomFlyerFoil.get() == "1+1" and varFoldedFlyerOverprint.get() == "4+4":
+    elif (varCustomFlyerPaperWeight.get() == "200" or varCustomFlyerPaperWeight.get() == "250" or varCustomFlyerPaperWeight.get() == "300" 
+        or varCustomFlyerPaperWeight.get() == "350") and varCustomFlyerFoil.get() == "1+1" and varFoldedFlyerOverprint.get() == "4+4":
         foliowanie = foliowanie * 2
     else:
         foliowanie = 0
@@ -930,7 +946,8 @@ def bannerCost():
     bannerRyczaltSerwis = float(ryczaltMaszyna * bannerArea)
     kosztPracownikaBaner = 8.0
 
-    finalCost = (plikMediaZaladowanieTestGlowicy + pakowanie + (bannerMaterialCost + bannerPrintCost + bannerEyeletCost + bannerTapeCost + bannerLaminationCost + bannerRyczaltSerwis + kosztPracownikaBaner + bannerCut) * float(entryBannerQuantity.get()))
+    finalCost = (plikMediaZaladowanieTestGlowicy + pakowanie + (bannerMaterialCost + bannerPrintCost + bannerEyeletCost + bannerTapeCost 
+                + bannerLaminationCost + bannerRyczaltSerwis + kosztPracownikaBaner + bannerCut) * float(entryBannerQuantity.get()))
 
     finalCost = round(finalCost, 2)
     finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
@@ -1018,5 +1035,168 @@ labelBannerMarginFinalVAT.pack()
 
 textBannerMarginFinalVAT = Text(banner, height = 1, width = 20)
 textBannerMarginFinalVAT.pack()
+
+# foil
+def foilCost():
+    margin = round((float(entryFoilMargin.get()) / 100), 3)
+
+    foilArea = float(entryFoilLength.get()) * float(entryFoilWidth.get())
+
+
+labelFoilLength = Label(foil, text = "Długość [m]:")
+labelFoilLength.pack()
+
+entryFoilLength = StringVar()
+entryFoilLength = Entry(foil, textvariable = entryFoilLength)
+entryFoilLength.pack()
+
+labelFoilWidth = Label(foil, text = "Szerokość [m]:")
+labelFoilWidth.pack()
+
+entryFoilWidth = StringVar()
+entryFoilWidth = Entry(foil, textvariable = entryFoilWidth)
+entryFoilWidth.pack()
+
+labelFoilQuantity = Label(foil, text = "Ilość:")
+labelFoilQuantity.pack()
+
+entryFoilQuantity = StringVar()
+entryFoilQuantity = Entry(foil, textvariable = entryFoilQuantity)
+entryFoilQuantity.pack()
+
+labelFoilLamination = Label(foil, text = "Laminowanie:")
+labelFoilLamination.pack()
+
+optFoilLamination = ["Płyn", "Folia"]
+varFoilLamination = StringVar()
+varFoilLamination.set(optFoilLamination[0])
+optFoilLamination = OptionMenu(foil, varFoilLamination, *optFoilLamination)
+optFoilLamination.pack()
+
+labelFoilMargin = Label(foil, text = "Marża:")
+labelFoilMargin.pack()
+
+entryFoilMargin = StringVar()
+entryFoilMargin = Entry(foil, textvariable = entryFoilMargin)
+entryFoilMargin.pack()
+
+# buttonFoilCost = Button(foil, text = "Oblicz", command = foilCost)
+# buttonFoilCost.pack()
+
+labelFoilProfit = Label(foil, text = "Nasz koszt 7%:")
+labelFoilProfit.pack()
+
+textFoilCostProfit = Text(foil, height = 1, width = 20)
+textFoilCostProfit.pack()
+
+labelFoilMarginFinal = Label(foil, text = "Finalny koszt:")
+labelFoilMarginFinal.pack()
+
+textFoilMarginFinal = Text(foil, height = 1, width = 20)
+textFoilMarginFinal.pack()
+
+labelFoilMarginFinalVAT = Label(foil, text = "Finalny koszt + VAT:")
+labelFoilMarginFinalVAT.pack()
+
+textFoilMarginFinalVAT = Text(foil, height = 1, width = 20)
+textFoilMarginFinalVAT.pack()
+
+# owv
+def owvCost():
+    margin = round((float(entryOwvMargin.get()) / 100), 3)
+
+    owvArea = float(entryOwvLength.get()) * float(entryOwvWidth.get())
+
+    owvSingleMaterialCost = 5.6
+    owvMaterialCost = owvArea * owvSingleMaterialCost
+
+    owvLaminationCost = 0
+    if varOwvLamination.get() == "Tak":
+        owvLaminationCost = float(owvArea * 6.0)
+        if owvLaminationCost < 25.0:
+            owvLaminationCost = 25.0
+        else:
+            owvLaminationCost = float(owvArea * 6.0)
+    else:
+        owvLaminationCost = 0
+    
+    cenaWydrukuOwv = (owvArea * float(entryOwvQuantity.get())) * (kosztAtramentM2 + czasObsMasDrukStawkaPrac)
+
+    ryczaltSerwisOwv = (owvArea * float(entryOwvQuantity.get())) * ryczaltMaszyna
+
+    przygotowaniePlikowZalMedZalPlikowTestGlowicy = 10.0
+    kosztPracCiecieM2Folii = 10.0
+    kosztPracownikaOwvSolwent = owvArea * czasObsMasDrukStawkaPrac
+
+    finalCost = owvMaterialCost + (cenaWydrukuOwv + ryczaltSerwisOwv + kosztPracownikaOwvSolwent + kosztPracCiecieM2Folii) * owvArea + przygotowaniePlikowZalMedZalPlikowTestGlowicy
+
+    finalCost = round(finalCost, 2)
+    finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
+    finalCostMargin = round((finalCostProfit + (finalCostProfit * margin)), 3)
+    finalCostMarginVAT = round(finalCostMargin * 1.23, 3)
+    textOwvCostProfit.delete("1.0", END)
+    textOwvCostProfit.insert(END, finalCostProfit)
+    textOwvMarginFinal.delete("1.0", END)
+    textOwvMarginFinal.insert(END, finalCostMargin) 
+    textOwvMarginFinalVAT.delete("1.0", END)
+    textOwvMarginFinalVAT.insert(END, finalCostMarginVAT)
+
+labelOwvLength = Label(owv, text = "Długość [m]:")
+labelOwvLength.pack()
+
+entryOwvLength = StringVar()
+entryOwvLength = Entry(owv, textvariable = entryOwvLength)
+entryOwvLength.pack()
+
+labelOwvWidth = Label(owv, text = "Szerokość [m]:")
+labelOwvWidth.pack()
+
+entryOwvWidth = StringVar()
+entryOwvWidth = Entry(owv, textvariable = entryOwvWidth)
+entryOwvWidth.pack()
+
+labelOwvQuantity = Label(owv, text = "Ilość:")
+labelOwvQuantity.pack()
+
+entryOwvQuantity = StringVar()
+entryOwvQuantity = Entry(owv, textvariable = entryOwvQuantity)
+entryOwvQuantity.pack()
+
+labelOwvLamination = Label(owv, text = "Laminowanie płynem:")
+labelOwvLamination.pack()
+
+optOwvLamination = ["Tak", "Nie"]
+varOwvLamination = StringVar()
+varOwvLamination.set(optOwvLamination[1])
+optOwvLamination = OptionMenu(owv, varOwvLamination, *optOwvLamination)
+optOwvLamination.pack()
+
+labelOwvMargin = Label(owv, text = "Marża:")
+labelOwvMargin.pack()
+
+entryOwvMargin = StringVar()
+entryOwvMargin = Entry(owv, textvariable = entryOwvMargin)
+entryOwvMargin.pack()
+
+buttonOwvCost = Button(owv, text = "Oblicz", command = owvCost)
+buttonOwvCost.pack()
+
+labelOwvProfit = Label(owv, text = "Nasz koszt 7%:")
+labelOwvProfit.pack()
+
+textOwvCostProfit = Text(owv, height = 1, width = 20)
+textOwvCostProfit.pack()
+
+labelOwvMarginFinal = Label(owv, text = "Finalny koszt:")
+labelOwvMarginFinal.pack()
+
+textOwvMarginFinal = Text(owv, height = 1, width = 20)
+textOwvMarginFinal.pack()
+
+labelOwvMarginFinalVAT = Label(owv, text = "Finalny koszt + VAT:")
+labelOwvMarginFinalVAT.pack()
+
+textOwvMarginFinalVAT = Text(owv, height = 1, width = 20)
+textOwvMarginFinalVAT.pack()
 
 calcWindow.mainloop()
