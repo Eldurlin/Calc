@@ -1,4 +1,5 @@
 from tkinter import Tk, StringVar, Text, Pack, ttk, Frame, Entry, Label, Button, END, IntVar, Grid, Radiobutton, OptionMenu
+import math
 
 calcWindow = Tk()
 calcWindow.title("Calc")
@@ -14,12 +15,12 @@ rollUp = Frame(calcWork)
 foldedFlyer = Frame(calcWork)
 customFlyer = Frame(calcWork)
 
+calcWork.add(customFlyer, text = "Ulotki niestandardowe")
 calcWork.add(businessCard, text = "Wizytówki")
 calcWork.add(poster, text = "Plakaty")
 calcWork.add(flyer, text = "Ulotki")
 calcWork.add(rollUp, text = "Roll-upy")
 calcWork.add(foldedFlyer, text = "Ulotki składane")
-calcWork.add(customFlyer, text = "Ulotki niestandardowe")
 
 #odstępy
 #niestandardowa wielkość
@@ -555,7 +556,6 @@ skladanieReczne = 6 / 60
 bigowanie = 7.2 / 60
 przygotowanieBigownicy = 5.00
 
-
 def foldedFlyerCost():
     margin = round((float(entryFoldedFlyerMargin.get()) / 100), 3)
 
@@ -588,10 +588,12 @@ def foldedFlyerCost():
     foldMachineArm = round(ryczaltFalcerkaSkladarka + przygotowanieMaszynyDoSkladania + (skladanieMaszynowe * float(entryFoldedFlyerQuantity.get())), 3)
     
     foldBig = 0
-    if varFoldedFlyerFold.get() == "Tylko big":
-        foldBig = round(przygotowanieBigownicy + (bigowanie * float(entryFoldedFlyerQuantity.get())), 3)
+    if varFoldedFlyerFold.get() == "Tylko big" and varFoldedFlyerSize.get() == "A4 do DL":
+        foldBig = round(przygotowanieBigownicy + (bigowanie * float(entryFoldedFlyerQuantity.get()) * 2) + (skladanieReczne * float(entryFoldedFlyerQuantity.get()) * 0), 3)
     elif varFoldedFlyerFold.get() == "Składanie + big" and varFoldedFlyerSize.get() == "A4 do DL":
-        foldBig = round(przygotowanieBigownicy + (bigowanie * float(entryFoldedFlyerQuantity.get())) + (skladanieReczne * float(entryFoldedFlyerQuantity.get()) * 2), 3)
+        foldBig = round(przygotowanieBigownicy + (bigowanie * float(entryFoldedFlyerQuantity.get()) * 2) + (skladanieReczne * float(entryFoldedFlyerQuantity.get()) * 2), 3)
+    elif varFoldedFlyerFold.get() == "Tylko big":
+        foldBig = round(przygotowanieBigownicy + (bigowanie * float(entryFoldedFlyerQuantity.get())), 3)
     else:
         foldBig = round(przygotowanieBigownicy + (bigowanie * float(entryFoldedFlyerQuantity.get())) + skladanieReczne * float(entryFoldedFlyerQuantity.get()), 3)
        
@@ -602,6 +604,8 @@ def foldedFlyerCost():
         cost = float(entryFoldedFlyerPatterns.get()) * float(entryFoldedFlyerQuantity.get()) / 4
     elif varFoldedFlyerSize.get() == "A6 do A7":
         cost = float(entryFoldedFlyerPatterns.get()) * float(entryFoldedFlyerQuantity.get()) / 8
+    elif varFoldedFlyerSize.get() == "28 do 14":
+        cost = float(entryFoldedFlyerPatterns.get()) * float(entryFoldedFlyerQuantity.get()) / 3
     else:
         cost = float(entryFoldedFlyerPatterns.get()) * float(entryFoldedFlyerQuantity.get()) / 2
     
@@ -660,7 +664,7 @@ optFoldedFlyerFold.pack()
 labelFoldedFlyerSize = Label(foldedFlyer, text = "Wielkość:")
 labelFoldedFlyerSize.pack()
 
-optFoldedFlyerSize = ["A3 do A4", "A4 do A5", "A5 do A6", "A6 do A7", "A4 do DL", "2xDL do DL", "28 do 14, 29 do 14,5, 30 do 15"]
+optFoldedFlyerSize = ["A3 do A4", "A4 do A5", "A5 do A6", "A6 do A7", "A4 do DL", "2xDL do DL", "28 do 14", "29 do 14,5, 30 do 15"]
 varFoldedFlyerSize = StringVar()
 varFoldedFlyerSize.set(optFoldedFlyerSize[0])
 optFoldedFlyerSize = OptionMenu(foldedFlyer, varFoldedFlyerSize, *optFoldedFlyerSize)
@@ -720,5 +724,167 @@ labelFoldedFlyerMarginFinalVAT.pack()
 
 textFoldedFlyerMarginFinalVAT = Text(foldedFlyer, height = 1, width = 20)
 textFoldedFlyerMarginFinalVAT.pack()
+
+# custom flyers
+def customFlyerCost():
+    margin = round((float(entryCustomFlyerMargin.get()) / 100), 3)
+
+    cenaPrzelotuPracownik = 0
+    if varCustomFlyerOverprint.get() == "4+0":
+        cenaPrzelotuPracownik = (2 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + drukKosztPracownikaLokal36Sra3NaMin
+    elif varCustomFlyerOverprint.get() == "4+0" and varFoldedFlyerFoil.get() == "1+0":
+        cenaPrzelotuPracownik = (2 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + (2 * drukKosztPracownikaLokal36Sra3NaMin)
+    elif varCustomFlyerOverprint.get() == "4+4" and varFoldedFlyerFoil.get() == "1+1":
+        cenaPrzelotuPracownik = (4 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + (2 * drukKosztPracownikaLokal36Sra3NaMin)
+    else:
+        cenaPrzelotuPracownik = (4 * (przelotSerwisowy + kosztWliczonyDoPrzelotu)) + drukKosztPracownikaLokal36Sra3NaMin
+
+    foliowanie = float(cenaFoliiZaPrzelotSra310) + float(ryczaltZakupFoliarkiDoliczonydoPrzelotu10Sra3) + float(foliaKosztPracownikaLokal2PrzelotyNaMin)
+    if (varCustomFlyerPaperWeight.get() == "200" or varCustomFlyerPaperWeight.get() == "250" or varCustomFlyerPaperWeight.get() == "300" or varCustomFlyerPaperWeight.get() == "350") and varCustomFlyerFoil.get() == "1+0" and varFoldedFlyerOverprint.get() == "4+0":
+        foliowanie = foliowanie
+    elif (varCustomFlyerPaperWeight.get() == "200" or varCustomFlyerPaperWeight.get() == "250" or varCustomFlyerPaperWeight.get() == "300" or varCustomFlyerPaperWeight.get() == "350") and varCustomFlyerFoil.get() == "1+1" and varFoldedFlyerOverprint.get() == "4+4":
+        foliowanie = foliowanie * 2
+    else:
+        foliowanie = 0
+    
+    ciecie = 10
+    
+    foldMachineArm = round(ryczaltFalcerkaSkladarka + przygotowanieMaszynyDoSkladania + (skladanieMaszynowe * float(entryCustomFlyerQuantity.get())), 3)
+    
+    foldBig = 0
+    if varCustomFlyerFold.get() == "Tylko big":
+        foldBig = round(przygotowanieBigownicy + (bigowanie * float(entryCustomFlyerQuantity.get()) * 2) + (skladanieReczne * float(entryCustomFlyerQuantity.get()) * 0), 3)
+    elif varCustomFlyerFold.get() == "Składanie + big":
+        foldBig = round(przygotowanieBigownicy + (bigowanie * float(entryCustomFlyerQuantity.get()) * 2) + (skladanieReczne * float(entryCustomFlyerQuantity.get()) * 2), 3)
+    else:
+        foldBig = 0
+    
+    customLengthQuantityPerSheet = math.floor(30.9 / int(entryCustomFlyerLength.get()))
+    customWidthQuantityPerSheet = math.floor(43.9 / int(entryCustomFlyerWidth.get()))
+    customQuantityPerSheet = customLengthQuantityPerSheet * customWidthQuantityPerSheet
+
+    cost = float(entryCustomFlyerQuantity.get()) / customQuantityPerSheet
+    
+    finalCost = 0
+    if varCustomFlyerPaperWeight.get() == "130":
+        finalCost = (cost * (cenaPapieruSra3130g + cenaPrzelotuPracownik + foliowanie) + foldMachineArm + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+    elif varCustomFlyerPaperWeight.get() == "150":
+        finalCost = (cost * (cenaPapieruSra3150g + cenaPrzelotuPracownik + foliowanie) + foldMachineArm + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+    elif varCustomFlyerPaperWeight.get() == "170":
+        finalCost = (cost * (cenaPapieruSra3170g + cenaPrzelotuPracownik + foliowanie) + foldBig + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+    elif varCustomFlyerPaperWeight.get() == "200":
+        finalCost = (cost * (cenaPapieruSra3200g + cenaPrzelotuPracownik + foliowanie) + foldBig + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+    elif varCustomFlyerPaperWeight.get() == "250":
+        finalCost = (cost * (cenaPapieruSra3250g + cenaPrzelotuPracownik + foliowanie) + foldBig + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+    elif varCustomFlyerPaperWeight.get() == "300":
+        finalCost = (cost * (cenaPapieruSra3300g + cenaPrzelotuPracownik + foliowanie) + foldBig + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+    elif varCustomFlyerPaperWeight.get() == "350":
+        finalCost = (cost * (cenaPapieruSra3350g + cenaPrzelotuPracownik + foliowanie) + foldBig + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+    else:
+        finalCost = (cost * (cenaPapieruSra3Ozdobny + cenaPrzelotuPracownik + foliowanie) + foldBig + ciecie + pakowanie + przygotowanieDoDrukuRozgrzanieMaszyny10Min)
+    
+    finalCost = round(finalCost, 2)
+    finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
+    finalCostProfitMargin = round((finalCostProfit + (finalCostProfit * margin)), 3)
+    finalCostProfitMarginVAT = round(finalCostProfitMargin * 1.23, 3)
+    textCustomFlyerQuantityPerSheet.delete("1.0", END)
+    textCustomFlyerQuantityPerSheet.insert(END, customQuantityPerSheet)
+    textCustomFlyerCostProfit.delete("1.0", END)
+    textCustomFlyerCostProfit.insert(END, finalCostProfit)
+    textCustomFlyerMarginFinal.delete("1.0", END)
+    textCustomFlyerMarginFinal.insert(END, finalCostProfitMargin)
+    textCustomFlyerMarginFinalVAT.delete("1.0", END)
+    textCustomFlyerMarginFinalVAT.insert(END, finalCostProfitMarginVAT)
+
+labelCustomFlyerLength = Label(customFlyer, text = "Długość [cm]:")
+labelCustomFlyerLength.pack()
+
+entryCustomFlyerLength = StringVar()
+entryCustomFlyerLength = Entry(customFlyer, textvariable = entryCustomFlyerLength)
+entryCustomFlyerLength.pack()
+
+labelCustomFlyerWidth = Label(customFlyer, text = "Szerokość [cm]:")
+labelCustomFlyerWidth.pack()
+
+entryCustomFlyerWidth = StringVar()
+entryCustomFlyerWidth = Entry(customFlyer, textvariable = entryCustomFlyerWidth)
+entryCustomFlyerWidth.pack()
+
+labelCustomFlyerQuantity = Label(customFlyer, text = "Ilość:")
+labelCustomFlyerQuantity.pack()
+
+entryCustomFlyerQuantity = StringVar()
+entryCustomFlyerQuantity = Entry(customFlyer, textvariable = entryCustomFlyerQuantity)
+entryCustomFlyerQuantity.pack()
+
+labelCustomFlyerFold = Label(customFlyer, text = "Składanie/bigowanie:")
+labelCustomFlyerFold.pack()
+
+optCustomFlyerFold = ["Brak", "Tylko big", "Składanie + big"]
+varCustomFlyerFold = StringVar()
+varCustomFlyerFold.set(optCustomFlyerFold[0])
+optCustomFlyerFold = OptionMenu(customFlyer, varCustomFlyerFold, *optCustomFlyerFold)
+optCustomFlyerFold.pack()
+
+labelCustomFlyerPaperWeight = Label(customFlyer, text = "Gramatura:")
+labelCustomFlyerPaperWeight.pack()
+
+optCustomFlyerPaperWeight = ["130", "150", "170", "200", "250", "300", "350", "Ozdobny"]
+varCustomFlyerPaperWeight = StringVar()
+varCustomFlyerPaperWeight.set(optCustomFlyerPaperWeight[0])
+optCustomFlyerPaperWeight = OptionMenu(customFlyer, varCustomFlyerPaperWeight, *optCustomFlyerPaperWeight)
+optCustomFlyerPaperWeight.pack()
+
+labelCustomFlyersOverprint = Label(customFlyer, text = "Zadruk:")
+labelCustomFlyersOverprint.pack()
+
+optCustomFlyerOverprint = ["4+0", "4+4"]
+varCustomFlyerOverprint = StringVar()
+varCustomFlyerOverprint.set(optCustomFlyerOverprint[0])
+optCustomFlyerOverprint = OptionMenu(customFlyer, varCustomFlyerOverprint, *optCustomFlyerOverprint)
+optCustomFlyerOverprint.pack()
+
+labelCustomFlyerFoil = Label(customFlyer, text = "Foliowanie:")
+labelCustomFlyerFoil.pack()
+
+optCustomFlyerFoil = ["Brak", "1+0", "1+1"]
+varCustomFlyerFoil = StringVar()
+varCustomFlyerFoil.set(optCustomFlyerFoil[0])
+optCustomFlyerFoil = OptionMenu(customFlyer, varCustomFlyerFoil, *optCustomFlyerFoil)
+optCustomFlyerFoil.pack()
+
+labelCustomFlyerMargin = Label(customFlyer, text = "Marża:")
+labelCustomFlyerMargin.pack()
+
+entryCustomFlyerMargin = StringVar()
+entryCustomFlyerMargin = Entry(customFlyer, textvariable = entryCustomFlyerMargin)
+entryCustomFlyerMargin.pack()
+
+buttonCustomFlyerCost = Button(customFlyer, text = "Oblicz", command = customFlyerCost)
+buttonCustomFlyerCost.pack()
+
+labelCustomFlyerQuantityPerSheet = Label(customFlyer, text = "Ilość na arkuszu:")
+labelCustomFlyerQuantityPerSheet.pack()
+
+textCustomFlyerQuantityPerSheet = Text(customFlyer, height = 1, width = 20)
+textCustomFlyerQuantityPerSheet.pack()
+
+labelCustomFlyerProfit = Label(customFlyer, text = "Nasz koszt 7%:")
+labelCustomFlyerProfit.pack()
+
+textCustomFlyerCostProfit = Text(customFlyer, height = 1, width = 20)
+textCustomFlyerCostProfit.pack()
+
+labelCustomFlyerMarginFinal = Label(customFlyer, text = "Finalny koszt:")
+labelCustomFlyerMarginFinal.pack()
+
+textCustomFlyerMarginFinal = Text(customFlyer, height = 1, width = 20)
+textCustomFlyerMarginFinal.pack()
+
+labelCustomFlyerMarginFinalVAT = Label(customFlyer, text = "Finalny koszt + VAT:")
+labelCustomFlyerMarginFinalVAT.pack()
+
+textCustomFlyerMarginFinalVAT = Text(customFlyer, height = 1, width = 20)
+textCustomFlyerMarginFinalVAT.pack()
 
 calcWindow.mainloop()
