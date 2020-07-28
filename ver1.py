@@ -3,7 +3,7 @@ import math
 
 calcWindow = Tk()
 calcWindow.title("Calc")
-calcWindow.geometry("450x600")
+calcWindow.geometry("500x650")
 
 calcWork = ttk.Notebook(calcWindow)
 calcWork.pack()
@@ -14,7 +14,9 @@ flyer = Frame(calcWork)
 rollUp = Frame(calcWork)
 foldedFlyer = Frame(calcWork)
 customFlyer = Frame(calcWork)
+banner = Frame(calcWork)
 
+calcWork.add(banner, text = "Banery")
 calcWork.add(customFlyer, text = "Ulotki niestandardowe")
 calcWork.add(businessCard, text = "Wizytówki")
 calcWork.add(poster, text = "Plakaty")
@@ -22,9 +24,8 @@ calcWork.add(flyer, text = "Ulotki")
 calcWork.add(rollUp, text = "Roll-upy")
 calcWork.add(foldedFlyer, text = "Ulotki składane")
 
-#odstępy
-#niestandardowa wielkość
-#zmiana kosztów papieru etc
+# odstępy
+# zmiana kosztów papieru etc
 # ff6600
 
 #podstawowe stałe
@@ -886,5 +887,136 @@ labelCustomFlyerMarginFinalVAT.pack()
 
 textCustomFlyerMarginFinalVAT = Text(customFlyer, height = 1, width = 20)
 textCustomFlyerMarginFinalVAT.pack()
+
+# banner
+def bannerCost():
+    margin = round((float(entryBannerMargin.get()) / 100), 3)
+
+    bannerCircuit = float(2 * (float(entryBannerLength.get()) + float(entryBannerWidth.get())))
+    bannerArea = float(entryBannerLength.get()) * float(entryBannerWidth.get())
+
+    bannerTapeCost = 0
+    if varBannerTape.get() == "Tak":
+        bannerTapeCost = float(bannerCircuit * 0.46)
+    else:
+        bannerTapeCost = 0
+
+    bannerEyeletCost = 0
+    bannerSingleEyeletCost = 0.09
+    if varBannerEyelet.get() == "Co 25 cm":
+        bannerEyeletCost = float((bannerCircuit / 0.25) * bannerSingleEyeletCost)
+    elif varBannerEyelet.get() == "Co 50 cm":
+        bannerEyeletCost = float((bannerCircuit / 0.50) * bannerSingleEyeletCost)
+    elif varBannerEyelet.get() == "Tylko rogi":
+        bannerEyeletCost = 4 * bannerSingleEyeletCost
+    else:
+        bannerEyeletCost = 0
+
+    bannerLaminationCost = 0
+    if varBannerLamination.get() == "Tak":
+        bannerLaminationCost = float(bannerArea * 6.0)
+        if bannerLaminationCost < 25.0:
+            bannerLaminationCost = 25.0
+        else:
+            bannerLaminationCost = float(bannerArea * 6.0)
+    else:
+        bannerLaminationCost = 0
+
+    bannerCut = 5.0
+    cenaJednostkowaMaterialBaner = 3.2
+
+    bannerMaterialCost = float(cenaJednostkowaMaterialBaner * bannerArea)
+    bannerPrintCost = float(kosztAtramentM2 * bannerArea)
+    bannerRyczaltSerwis = float(ryczaltMaszyna * bannerArea)
+    kosztPracownikaBaner = 8.0
+
+    finalCost = (plikMediaZaladowanieTestGlowicy + pakowanie + (bannerMaterialCost + bannerPrintCost + bannerEyeletCost + bannerTapeCost + bannerLaminationCost + bannerRyczaltSerwis + kosztPracownikaBaner + bannerCut) * float(entryBannerQuantity.get()))
+
+    finalCost = round(finalCost, 2)
+    finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
+    finalCostMargin = round((finalCostProfit + (finalCostProfit * margin)), 3)
+    finalCostMarginVAT = round(finalCostMargin * 1.23, 3)
+    textBannerCostProfit.delete("1.0", END)
+    textBannerCostProfit.insert(END, finalCostProfit)
+    textBannerMarginFinal.delete("1.0", END)
+    textBannerMarginFinal.insert(END, finalCostMargin) 
+    textBannerMarginFinalVAT.delete("1.0", END)
+    textBannerMarginFinalVAT.insert(END, finalCostMarginVAT)
+
+labelBannerLength = Label(banner, text = "Długość [m]:")
+labelBannerLength.pack()
+
+entryBannerLength = StringVar()
+entryBannerLength = Entry(banner, textvariable = entryBannerLength)
+entryBannerLength.pack()
+
+labelBannerWidth = Label(banner, text = "Szerokość [m]:")
+labelBannerWidth.pack()
+
+entryBannerWidth = StringVar()
+entryBannerWidth = Entry(banner, textvariable = entryBannerWidth)
+entryBannerWidth.pack()
+
+labelBannerQuantity = Label(banner, text = "Ilość:")
+labelBannerQuantity.pack()
+
+entryBannerQuantity = StringVar()
+entryBannerQuantity = Entry(banner, textvariable = entryBannerQuantity)
+entryBannerQuantity.pack()
+
+labelBannerTape = Label(banner, text = "Taśma banerowa:")
+labelBannerTape.pack()
+
+optBannerTape = ["Tak", "Nie"]
+varBannerTape = StringVar()
+varBannerTape.set(optBannerTape[1])
+optBannerTape = OptionMenu(banner, varBannerTape, *optBannerTape)
+optBannerTape.pack()
+
+labelBannerEyelet = Label(banner, text = "Oczka:")
+labelBannerEyelet.pack()
+
+optBannerEyelet = ["Brak", "Co 25 cm", "Co 50 cm", "Tylko rogi"]
+varBannerEyelet = StringVar()
+varBannerEyelet.set(optBannerEyelet[0])
+optBannerEyelet = OptionMenu(banner, varBannerEyelet, *optBannerEyelet)
+optBannerEyelet.pack()
+
+labelBannerLamination = Label(banner, text = "Laminowanie płynem:")
+labelBannerLamination.pack()
+
+optBannerLamination = ["Tak", "Nie"]
+varBannerLamination = StringVar()
+varBannerLamination.set(optBannerLamination[1])
+optBannerLamination = OptionMenu(banner, varBannerLamination, *optBannerLamination)
+optBannerLamination.pack()
+
+labelBannerMargin = Label(banner, text = "Marża:")
+labelBannerMargin.pack()
+
+entryBannerMargin = StringVar()
+entryBannerMargin = Entry(banner, textvariable = entryBannerMargin)
+entryBannerMargin.pack()
+
+buttonBannerCost = Button(banner, text = "Oblicz", command = bannerCost)
+buttonBannerCost.pack()
+
+labelBannerProfit = Label(banner, text = "Nasz koszt 7%:")
+labelBannerProfit.pack()
+
+textBannerCostProfit = Text(banner, height = 1, width = 20)
+textBannerCostProfit.pack()
+
+labelBannerMarginFinal = Label(banner, text = "Finalny koszt:")
+labelBannerMarginFinal.pack()
+
+textBannerMarginFinal = Text(banner, height = 1, width = 20)
+textBannerMarginFinal.pack()
+
+labelBannerMarginFinalVAT = Label(banner, text = "Finalny koszt + VAT:")
+labelBannerMarginFinalVAT.pack()
+
+textBannerMarginFinalVAT = Text(banner, height = 1, width = 20)
+textBannerMarginFinalVAT.pack()
 
 calcWindow.mainloop()
