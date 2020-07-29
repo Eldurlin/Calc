@@ -3,7 +3,7 @@ import math
 
 calcWindow = Tk()
 calcWindow.title("Calc")
-calcWindow.geometry("500x650")
+calcWindow.geometry("600x600")
 
 calcWork = ttk.Notebook(calcWindow)
 calcWork.pack()
@@ -17,7 +17,9 @@ customFlyer = Frame(calcWork)
 banner = Frame(calcWork)
 foil = Frame(calcWork)
 owv = Frame(calcWork)
+paper = Frame(calcWork)
 
+calcWork.add(paper, text = "Papier")
 calcWork.add(owv, text = "OWV")
 calcWork.add(foil, text = "Folia")
 calcWork.add(banner, text = "Banery")
@@ -1040,8 +1042,34 @@ textBannerMarginFinalVAT.pack()
 def foilCost():
     margin = round((float(entryFoilMargin.get()) / 100), 3)
 
+    foilSingleMaterialCost = 4.3
+
     foilArea = float(entryFoilLength.get()) * float(entryFoilWidth.get())
 
+    foilMaterialCost = foilSingleMaterialCost * foilArea
+
+    foilPrintCost = foilArea * (kosztAtramentM2 + czasObsMasDrukStawkaPrac)
+
+    foilRyczaltSerwis = (foilArea * float(entryFoilQuantity.get())) * ryczaltMaszyna
+
+    przygotowanieDoDrukuRozgrzanieMaszyny = 10.0
+
+    kosztPracownika = foilArea * czasObsMasDrukStawkaPrac
+
+    kosztCiecie = 10.0
+
+    finalCost = foilMaterialCost + ((foilPrintCost + foilRyczaltSerwis + kosztPracownika + kosztCiecie) * foilArea) + przygotowanieDoDrukuRozgrzanieMaszyny
+
+    finalCost = round(finalCost, 2)
+    finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
+    finalCostMargin = round((finalCostProfit + (finalCostProfit * margin)), 3)
+    finalCostMarginVAT = round(finalCostMargin * 1.23, 3)
+    textFoilCostProfit.delete("1.0", END)
+    textFoilCostProfit.insert(END, finalCostProfit)
+    textFoilMarginFinal.delete("1.0", END)
+    textFoilMarginFinal.insert(END, finalCostMargin) 
+    textFoilMarginFinalVAT.delete("1.0", END)
+    textFoilMarginFinalVAT.insert(END, finalCostMarginVAT)
 
 labelFoilLength = Label(foil, text = "Długość [m]:")
 labelFoilLength.pack()
@@ -1080,8 +1108,8 @@ entryFoilMargin = StringVar()
 entryFoilMargin = Entry(foil, textvariable = entryFoilMargin)
 entryFoilMargin.pack()
 
-# buttonFoilCost = Button(foil, text = "Oblicz", command = foilCost)
-# buttonFoilCost.pack()
+buttonFoilCost = Button(foil, text = "Oblicz", command = foilCost)
+buttonFoilCost.pack()
 
 labelFoilProfit = Label(foil, text = "Nasz koszt 7%:")
 labelFoilProfit.pack()
@@ -1198,5 +1226,75 @@ labelOwvMarginFinalVAT.pack()
 
 textOwvMarginFinalVAT = Text(owv, height = 1, width = 20)
 textOwvMarginFinalVAT.pack()
+
+# paper
+def paperCost():
+    margin = round((float(entryPaperMargin.get()) / 100), 3)
+
+    paperArea = float(entryPaperLength.get()) * float(entryPaperWidth.get())
+
+    paperMaterialCost = 0
+    if varPaperPaperWeight.get() == "150":
+        paperMaterialCost = 2.0 * paperArea
+    else:
+        paperMaterialCost = 3.0 * paperArea
+
+labelPaperLength = Label(paper, text = "Długość [m]:")
+labelPaperLength.pack()
+
+entryPaperLength = StringVar()
+entryPaperLength = Entry(paper, textvariable = entryPaperLength)
+entryPaperLength.pack()
+
+labelPaperWidth = Label(paper, text = "Szerokość [m]:")
+labelPaperWidth.pack()
+
+entryPaperWidth = StringVar()
+entryPaperWidth = Entry(paper, textvariable = entryPaperWidth)
+entryPaperWidth.pack()
+
+labelPaperQuantity = Label(paper, text = "Ilość:")
+labelPaperQuantity.pack()
+
+entryPaperQuantity = StringVar()
+entryPaperQuantity = Entry(paper, textvariable = entryPaperQuantity)
+entryPaperQuantity.pack()
+
+labelPaperPaperWeight = Label(paper, text = "Gramatura:")
+labelPaperPaperWeight.pack()
+
+optPaperPaperWeight = ["150", "200"]
+varPaperPaperWeight = StringVar()
+varPaperPaperWeight.set(optPaperPaperWeight[0])
+optPaperPaperWeight = OptionMenu(paper, varPaperPaperWeight, *optPaperPaperWeight)
+optPaperPaperWeight.pack()
+
+labelPaperMargin = Label(paper, text = "Marża:")
+labelPaperMargin.pack()
+
+entryPaperMargin = StringVar()
+entryPaperMargin = Entry(paper, textvariable = entryPaperMargin)
+entryPaperMargin.pack()
+
+buttonPaperCost = Button(paper, text = "Oblicz", command = paperCost)
+buttonPaperCost.pack()
+
+labelPaperProfit = Label(paper, text = "Nasz koszt 7%:")
+labelPaperProfit.pack()
+
+textPaperCostProfit = Text(paper, height = 1, width = 20)
+textPaperCostProfit.pack()
+
+labelPaperMarginFinal = Label(paper, text = "Finalny koszt:")
+labelPaperMarginFinal.pack()
+
+textPaperMarginFinal = Text(paper, height = 1, width = 20)
+textPaperMarginFinal.pack()
+
+labelPaperMarginFinalVAT = Label(paper, text = "Finalny koszt + VAT:")
+labelPaperMarginFinalVAT.pack()
+
+textPaperMarginFinalVAT = Text(paper, height = 1, width = 20)
+textPaperMarginFinalVAT.pack()
 
 calcWindow.mainloop()
