@@ -1263,12 +1263,12 @@ def paperCost():
     else:
         paperMaterialCost = 3.0 * paperSize
 
-    paperCut = 5.0
+    paperCut = 1.0
     paperPrintCost = float(kosztAtramentM2 * paperSize)
     paperRyczaltCost = float(ryczaltMaszyna * paperSize)
     kosztPracownikaPlakat = 2.0
 
-    finalCost = (plikMediaZaladowanieTestGlowicy + pakowanie + (paperMaterialCost + paperPrintCost + paperRyczaltCost + kosztPracownikaPlakat + paperCut) * float(entryPaperQuantity.get()))
+    finalCost = ((paperMaterialCost + paperPrintCost + paperRyczaltCost + kosztPracownikaPlakat + paperCut) * float(entryPaperQuantity.get())) + plikMediaZaladowanieTestGlowicy + pakowanie
 
     finalCost = round(finalCost, 2)
     finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
