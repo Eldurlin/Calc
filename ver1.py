@@ -948,8 +948,8 @@ def bannerCost():
     bannerRyczaltSerwis = float(ryczaltMaszyna * bannerArea)
     kosztPracownikaBaner = 8.0
 
-    finalCost = (plikMediaZaladowanieTestGlowicy + pakowanie + (bannerMaterialCost + bannerPrintCost + bannerEyeletCost + bannerTapeCost 
-                + bannerLaminationCost + bannerRyczaltSerwis + kosztPracownikaBaner + bannerCut) * float(entryBannerQuantity.get()))
+    finalCost = ((bannerMaterialCost + bannerPrintCost + bannerEyeletCost + bannerTapeCost + bannerLaminationCost + bannerRyczaltSerwis 
+                + kosztPracownikaBaner + bannerCut) * float(entryBannerQuantity.get())) + plikMediaZaladowanieTestGlowicy + pakowanie
 
     finalCost = round(finalCost, 2)
     finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
@@ -1072,7 +1072,7 @@ def foilCost():
     else:
         foilLaminationCost = 0
 
-    finalCost = foilMaterialCost + ((foilPrintCost + foilRyczaltSerwis + kosztPracownika + kosztCiecie) * foilArea) + przygotowanieDoDrukuRozgrzanieMaszyny + foilLaminationCost
+    finalCost = foilMaterialCost + ((foilPrintCost + foilRyczaltSerwis + kosztPracownika + kosztCiecie) * foilArea) + przygotowanieDoDrukuRozgrzanieMaszyny + foilLaminationCost + pakowanie
 
     finalCost = round(finalCost, 2)
     finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
@@ -1170,7 +1170,7 @@ def owvCost():
     kosztPracCiecieM2Folii = 10.0
     kosztPracownikaOwvSolwent = owvArea * czasObsMasDrukStawkaPrac
 
-    finalCost = owvMaterialCost + (cenaWydrukuOwv + ryczaltSerwisOwv + kosztPracownikaOwvSolwent + kosztPracCiecieM2Folii) * owvArea + przygotowaniePlikowZalMedZalPlikowTestGlowicy
+    finalCost = owvMaterialCost + (cenaWydrukuOwv + ryczaltSerwisOwv + kosztPracownikaOwvSolwent + kosztPracCiecieM2Folii) * owvArea + przygotowaniePlikowZalMedZalPlikowTestGlowicy + pakowanie
 
     finalCost = round(finalCost, 2)
     finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
