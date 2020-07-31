@@ -1044,7 +1044,7 @@ def foilCost():
 
     foilSingleMaterialCost = 4.3
 
-    foilArea = float(entryFoilLength.get()) * float(entryFoilWidth.get())
+    foilArea = (float(entryFoilLength.get()) / 100) * (float(entryFoilWidth.get()) / 100)
 
     foilMaterialCost = foilSingleMaterialCost * foilArea
 
@@ -1058,7 +1058,21 @@ def foilCost():
 
     kosztCiecie = 10.0
 
-    finalCost = foilMaterialCost + ((foilPrintCost + foilRyczaltSerwis + kosztPracownika + kosztCiecie) * foilArea) + przygotowanieDoDrukuRozgrzanieMaszyny
+    foilLaminationCost = 0
+    if varFoilLamination.get() == "Płyn":
+        foilLaminationCost = float(foilArea * 6.0)
+        if foilLaminationCost < 25.0:
+            foilLaminationCost = 25.0
+        else:
+            foilLaminationCost = float(foilArea * 6.0)
+    elif varFoilLamination.get() == "Folia":
+        foilLaminationCost = float(foilArea * 8.0)
+        if foilLaminationCost < 15.0:
+            foilLaminationCost = 15.0
+    else:
+        foilLaminationCost = 0
+
+    finalCost = foilMaterialCost + ((foilPrintCost + foilRyczaltSerwis + kosztPracownika + kosztCiecie) * foilArea) + przygotowanieDoDrukuRozgrzanieMaszyny + foilLaminationCost
 
     finalCost = round(finalCost, 2)
     finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
@@ -1071,14 +1085,14 @@ def foilCost():
     textFoilMarginFinalVAT.delete("1.0", END)
     textFoilMarginFinalVAT.insert(END, finalCostMarginVAT)
 
-labelFoilLength = Label(foil, text = "Długość [m]:")
+labelFoilLength = Label(foil, text = "Długość [cm]:")
 labelFoilLength.pack()
 
 entryFoilLength = StringVar()
 entryFoilLength = Entry(foil, textvariable = entryFoilLength)
 entryFoilLength.pack()
 
-labelFoilWidth = Label(foil, text = "Szerokość [m]:")
+labelFoilWidth = Label(foil, text = "Szerokość [cm]:")
 labelFoilWidth.pack()
 
 entryFoilWidth = StringVar()
@@ -1095,7 +1109,7 @@ entryFoilQuantity.pack()
 labelFoilLamination = Label(foil, text = "Laminowanie:")
 labelFoilLamination.pack()
 
-optFoilLamination = ["Płyn", "Folia"]
+optFoilLamination = ["Brak", "Płyn", "Folia"]
 varFoilLamination = StringVar()
 varFoilLamination.set(optFoilLamination[0])
 optFoilLamination = OptionMenu(foil, varFoilLamination, *optFoilLamination)
@@ -1133,7 +1147,7 @@ textFoilMarginFinalVAT.pack()
 def owvCost():
     margin = round((float(entryOwvMargin.get()) / 100), 3)
 
-    owvArea = float(entryOwvLength.get()) * float(entryOwvWidth.get())
+    owvArea = (float(entryOwvLength.get()) / 100) * (float(entryOwvWidth.get()) / 100)
 
     owvSingleMaterialCost = 5.6
     owvMaterialCost = owvArea * owvSingleMaterialCost
@@ -1169,14 +1183,14 @@ def owvCost():
     textOwvMarginFinalVAT.delete("1.0", END)
     textOwvMarginFinalVAT.insert(END, finalCostMarginVAT)
 
-labelOwvLength = Label(owv, text = "Długość [m]:")
+labelOwvLength = Label(owv, text = "Długość [cm]:")
 labelOwvLength.pack()
 
 entryOwvLength = StringVar()
 entryOwvLength = Entry(owv, textvariable = entryOwvLength)
 entryOwvLength.pack()
 
-labelOwvWidth = Label(owv, text = "Szerokość [m]:")
+labelOwvWidth = Label(owv, text = "Szerokość [cm]:")
 labelOwvWidth.pack()
 
 entryOwvWidth = StringVar()
@@ -1231,27 +1245,41 @@ textOwvMarginFinalVAT.pack()
 def paperCost():
     margin = round((float(entryPaperMargin.get()) / 100), 3)
 
-    paperArea = float(entryPaperLength.get()) * float(entryPaperWidth.get())
+    paperSize = 0
+    if varPaperSize.get() == "A2":
+        paperSize = 0.42 * 0.594
+    elif varPaperSize.get() == "A1":
+        paperSize = 0.594 * 0.841
+    elif varPaperSize.get() == "A0":
+        paperSize = 0.841 * 1.189
+    elif varPaperSize.get() == "B2":
+        paperSize = 0.5 * 0.7
+    else:
+        paperSize = 0.7 * 1.0
 
     paperMaterialCost = 0
     if varPaperPaperWeight.get() == "150":
-        paperMaterialCost = 2.0 * paperArea
+        paperMaterialCost = 2.0 * paperSize
     else:
-        paperMaterialCost = 3.0 * paperArea
+        paperMaterialCost = 3.0 * paperSize
 
-labelPaperLength = Label(paper, text = "Długość [m]:")
-labelPaperLength.pack()
+    paperCut = 5.0
+    paperPrintCost = float(kosztAtramentM2 * paperSize)
+    paperRyczaltCost = float(ryczaltMaszyna * paperSize)
+    kosztPracownikaPlakat = 2.0
 
-entryPaperLength = StringVar()
-entryPaperLength = Entry(paper, textvariable = entryPaperLength)
-entryPaperLength.pack()
+    finalCost = (plikMediaZaladowanieTestGlowicy + pakowanie + (paperMaterialCost + paperPrintCost + paperRyczaltCost + kosztPracownikaPlakat + paperCut) * float(entryPaperQuantity.get()))
 
-labelPaperWidth = Label(paper, text = "Szerokość [m]:")
-labelPaperWidth.pack()
-
-entryPaperWidth = StringVar()
-entryPaperWidth = Entry(paper, textvariable = entryPaperWidth)
-entryPaperWidth.pack()
+    finalCost = round(finalCost, 2)
+    finalCostProfit = round((finalCost + (finalCost * stalyProcent)), 3)
+    finalCostMargin = round((finalCostProfit + (finalCostProfit * margin)), 3)
+    finalCostMarginVAT = round(finalCostMargin * 1.23, 3)
+    textPaperCostProfit.delete("1.0", END)
+    textPaperCostProfit.insert(END, finalCostProfit)
+    textPaperMarginFinal.delete("1.0", END)
+    textPaperMarginFinal.insert(END, finalCostMargin) 
+    textPaperMarginFinalVAT.delete("1.0", END)
+    textPaperMarginFinalVAT.insert(END, finalCostMarginVAT)
 
 labelPaperQuantity = Label(paper, text = "Ilość:")
 labelPaperQuantity.pack()
@@ -1259,6 +1287,15 @@ labelPaperQuantity.pack()
 entryPaperQuantity = StringVar()
 entryPaperQuantity = Entry(paper, textvariable = entryPaperQuantity)
 entryPaperQuantity.pack()
+
+labelPaperSize = Label(paper, text = "Wielkość:")
+labelPaperSize.pack()
+
+optPaperSize = ["A2", "A1", "A0", "B2", "B1"]
+varPaperSize = StringVar()
+varPaperSize.set(optPaperSize[0])
+optPaperSize = OptionMenu(paper, varPaperSize, *optPaperSize)
+optPaperSize.pack()
 
 labelPaperPaperWeight = Label(paper, text = "Gramatura:")
 labelPaperPaperWeight.pack()
